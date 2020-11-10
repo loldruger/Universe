@@ -249,7 +249,9 @@
 			<b:widget id='Blog1' title='' type='Blog' version='3'>
 
 				<b:includable id='main'>
-
+					<b:if cond = 'data:view.url != data:blog.homepageUrl'>
+						
+					</b:if>
 					<b:include name = 'list-of-posts'></b:include>
 
 				</b:includable>
@@ -276,6 +278,7 @@
 													const published = "<data:i.date/>";
 													const edited = "<data:i.lastUpdated/>";
 
+													history.pushState({}, "<data:blog.pageTitle/>", "<data:i.url/>");
 													document.getElementById("post-content-"+"<data:i.id/>").innerHTML = '<div><div>published : ' + published + '</div>'+ '<div>last edited : ' + edited + '</div></div>' + post.content;
 
 												} else {
