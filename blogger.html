@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<title><data:blog.pageTitle/></title>
+		<b:skin><![CDATA[
+		@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+		* {
+			margin: 0;
+			padding: 0;
+			border: 0;
+			font-size: 100%;
+			font: inherit;
+			vertical-align: baseline;
+			font-family: 'Noto Sans KR', sans-serif; 
+			color: #fff;
+		}
+		/* HTML5 display-role reset for older browsers */
+		article, aside, details, figcaption, figure, 
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+		body {
+			line-height: 1;
+		}
+		ol, ul {
+			list-style: none;
+		}
+		blockquote, q {
+			quotes: none;
+		}
+		blockquote:before, blockquote:after,
+		q:before, q:after {
+			content: '';
+			content: none;
+		}
+		table {
+			border-collapse: collapse;
+			border-spacing: 0;
+		}
+
+		#Header1{
+			text-align: center;
+			font-size: 64pt;
+			padding: 1.3em 0 1.3em 0;
+		}
+
+		#blog-main {
+			width: 720px;
+		}
+
+		#Blog1{
+			margin-left: 0.7em;
+			margin-right: 0.7em;
+		}
+
+		#HTML1 > div {
+			margin-bottom: 0.8em;
+			padding: 0.3em 1em;
+			width: 11em;
+			background-color: #3c3d3e;
+			border-radius: 8px;
+		}
+
+		#HTML1 > #featured-posts {
+			background-color: #444f61;
+		}
+
+		#HTML1 > #about-me {
+			background-color: #b55a5a;
+			padding: 0.8em 1em;
+		}
+
+		#HTML1 > div > div {
+			margin-top: 0.5em;
+			margin-bottom: 0.5em;
+		}
+
+		#HTML2 > div {
+			visibility: hidden;
+			margin-bottom: 0.8em;
+			padding: 0.8em 1em;
+			width: 11em;
+			background-color: #fffafa5c;
+			border-radius: 8px;
+		}
+
+		.post-item {
+			background-color: #242424;
+			margin: 0 0 0.6em;
+			padding: 1.1em;
+			border-radius: 6px;
+			position: relative;
+		}
+
+		.post-item:hover {
+			background-color: #3c3d3e;
+		}
+
+		.post-item-meta {
+			display: flex;
+			align-items: center;
+		}
+
+		.post-title {
+			color: #2d90fa;
+			font-size: 20pt;
+			font-weight: bold;
+			flex: auto;
+		}
+
+		.post-item-author {
+			flex: none;
+			display: flex;
+			align-items: center;
+		}
+
+		.post-item-comment {
+			display: inline-flex;
+			align-items: center;
+		}
+
+		.post-content {
+			margin-top: 1.1em;
+			margin-bottom: 1em;
+			text-align: justify;
+		}
+
+		.post-label-separator {
+			color: #63676e;
+		}
+
+		.post-label-border {
+			border: solid 1px #35383e;
+			background-color: #35383e;
+			border-radius: 2em;
+			padding-left: 0.5em;
+			padding-right: 0.5em;
+			font-size: 8pt;
+		}
+
+		.post-label {
+		  	position: relative;
+			bottom: 0.5px;
+		}
+		
+		.post-snippets {
+			margin-top: 1em;
+			margin-bottom: 1em;
+			text-align: justify;
+		}
+
+		.post-author-photo {
+			position: relative;
+			right: 0.35em;
+
+			border-radius: 50%;
+		}
+
+		.post-comment-count {
+			position: relative;
+			left: -0.7em;
+			bottom: -0.6em;
+			border-radius: 2em;
+			padding-left: 0.19em;
+			padding-right: 0.25em;
+			background-color: #21232C;
+		}
+
+		.post-comment-count>span {
+			position: relative;
+			bottom: 1.7px;
+			left: 0.5px;
+			font-size: 10pt;
+			color: #fff;
+		}
+		  
+		body {
+			background-color: #000;
+			display: flex;
+			justify-content: center;
+		}
+
+		a {
+			text-decoration: none; 
+		}
+
+		.post-content *{
+			width: 100%;
+			height: auto;
+		}
+
+		@media ( max-width: 1200px ) {
+			#HTML1 {
+				display: none;
+			}
+
+			#HTML2 {
+				display: none;
+			}
+		}
+
+		@media ( max-width: 550px ) {
+			#Header1 {
+				font-size: 55pt;
+			}
+		}
+		
+		@media ( max-width: 430px ) {
+			#Header1 {
+				font-size: 48pt;
+			}
+		}
+		]]></b:skin>
+	</head>
+	<body>
+
+		<b:section id = 'blog-left'>
+			<b:widget id='HTML1' title='ass' type='HTML' version='3'>
+				<b:includable id='main'>
+					<div id = 'featured-posts'>
+						<div>featured posts</div>
+						<div>recent posts</div>
+						<div>notice</div>
+					</div>
+					<div>
+						<div>category 1</div>
+						<div>category 2</div>
+						<div>category 3</div>
+						<div>category 4</div>
+						<div>category 5</div>
+						<div>category 6</div>
+						<div>category 7</div>
+						<div>uncategorized</div>
+						<div>old posts</div>
+					</div>
+					<div id = 'about-me'>about me</div>
+				</b:includable>
+			</b:widget>
+		</b:section>
+
+
+		<b:section id = 'blog-main'>
+
+			<b:widget id='Header1' title='' type='Header' version='3'><b:includable id='main'><a expr:href = 'data:blog.homepageUrl'><data:title/></a></b:includable></b:widget>
+			
+			<b:widget id='Blog1' title='' type='Blog' version='3'>
+
+				<b:includable id='main'>
+
+					<b:include name = 'list-of-posts'></b:include>
+
+				</b:includable>
+
+				<!-- includables -->
+				<b:includable id = 'list-of-posts'>
+					
+					<b:loop index='index' var='i' values = 'data:posts'>
+						
+						<div expr:id = '"post-item-"+ data:i.id' class = 'post-item'>
+							<span class = 'post-item-meta'>
+								<a expr:id = '"post-id-"+ data:i.id' class = 'post-title' expr:href = 'data:i.url'><h1><data:i.title/></h1></a>
+
+								<script type='text/javascript'>
+									document.getElementById("post-id-"+"<data:i.id/>").addEventListener('click', (e) => {
+										e.preventDefault();
+
+										const httpRequest = new XMLHttpRequest();
+
+										httpRequest.onreadystatechange = () => {
+											if(httpRequest.readyState === XMLHttpRequest.DONE) {
+												if(httpRequest.status === 200) {
+													const post = JSON.parse(httpRequest.responseText);
+													const published = "<data:i.date/>";
+													const edited = "<data:i.lastUpdated/>";
+
+													document.getElementById("post-content-"+"<data:i.id/>").innerHTML = '<div><div>published : ' + published + '</div>'+ '<div>last edited : ' + edited + '</div></div>' + post.content;
+
+												} else {
+													document.getElementById("post-content-"+"<data:i.id/>").innerHTML = "BAD REQUEST"
+												}
+											}
+										};
+										httpRequest.open('GET', 'https://www.googleapis.com/blogger/v3/blogs/'+"<data:blog.blogId/>"+'/posts/'+"<data:i.id/>"+'?key=AIzaSyAHO1wRv0CrLYzZotA0_3n8cAvPpitYlek');
+										httpRequest.send();
+									});
+								</script>
+
+								<span class = 'post-item-author'>
+									<span><img class = 'post-author-photo' expr:src = 'data:i.author.authorPhoto.image' width="32" height="32"></img></span>
+									<span class = 'post-author'><data:i.author.name/></span>
+								</span>
+
+							</span>
+
+							<span class = 'post-item-label'>
+								<b:loop values='data:i.labels' var='label'>
+									<span class = 'post-label-separator'><span class = 'post-label-border'><a class = 'post-label' expr:href = 'data:label.url'><data:label.name/></a></span></span>
+								</b:loop>
+							</span>
+
+							<div expr:id = '"post-content-"+ data:i.id' class = 'post-content'><div class = 'post-snippets'><data:i.snippets.short/></div></div>
+
+							<span class = 'post-item-comment'>
+								<svg class = 'post-comment-icon' width="25" height="25" xmlns="http://www.w3.org/2000/svg" clip-rule="evenodd">
+									<g>
+										<title>background</title>
+										<rect fill="none" id="canvas_background" height="27" width="27" y="-1" x="-1"/>
+									   </g>
+									   <g>
+										<title>Comments</title>
+										<path stroke="null" id="svg_1" fill="#41e277" fill-rule="nonzero" d="m3.262229,1l18.097833,0c1.244226,0 2.262229,1.064119 2.262229,2.364708l0,14.188248c0,1.300589 -1.018003,2.364708 -2.262229,2.364708l-15.835604,0c0,0 -2.459609,2.571029 -3.751907,3.921868c-0.129513,0.13538 -0.324064,0.17558 -0.493166,0.102865c-0.169102,-0.073306 -0.279385,-0.24593 -0.279385,-0.437471c0,-4.417274 0,-20.140218 0,-20.140218c0,-1.300589 1.018003,-2.364708 2.262229,-2.364708zm2.262229,13.005894c0,0.313324 0.119333,0.614233 0.331417,0.835924c0.212084,0.221691 0.499953,0.34643 0.799698,0.34643c2.556319,0 8.754827,0 11.311145,0c0.299745,0 0.587614,-0.124738 0.799698,-0.34643c0.212084,-0.221691 0.331417,-0.5226 0.331417,-0.835924c0,-0.313915 -0.119333,-0.614233 -0.331417,-0.835924c-0.212084,-0.222283 -0.499953,-0.34643 -0.799698,-0.34643c-2.556319,0 -8.754827,0 -11.311145,0c-0.299745,0 -0.587614,0.124147 -0.799698,0.34643c-0.212084,0.221691 -0.331417,0.522009 -0.331417,0.835924c0,0 0,0 0,0zm0,-3.547062c0,0.313324 0.119333,0.614233 0.331417,0.835924c0.212084,0.221691 0.499953,0.34643 0.799698,0.34643c2.556319,0 8.754827,0 11.311145,0c0.299745,0 0.587614,-0.124738 0.799698,-0.34643c0.212084,-0.221691 0.331417,-0.5226 0.331417,-0.835924c0,-0.313915 -0.119333,-0.614233 -0.331417,-0.835924c-0.212084,-0.222283 -0.499953,-0.34643 -0.799698,-0.34643c-2.556319,0 -8.754827,0 -11.311145,0c-0.299745,0 -0.587614,0.124147 -0.799698,0.34643c-0.212084,0.221691 -0.331417,0.522009 -0.331417,0.835924c0,0 0,0 0,0zm0,-3.547062c0,0.313324 0.119333,0.614233 0.331417,0.835924c0.212084,0.221691 0.499953,0.34643 0.799698,0.34643c2.556319,0 8.754827,0 11.311145,0c0.299745,0 0.587614,-0.124738 0.799698,-0.34643c0.212084,-0.221691 0.331417,-0.5226 0.331417,-0.835924c0,-0.313915 -0.119333,-0.614233 -0.331417,-0.835924c-0.212084,-0.222283 -0.499953,-0.34643 -0.799698,-0.34643c-2.556319,0 -8.754827,0 -11.311145,0c-0.299745,0 -0.587614,0.124147 -0.799698,0.34643c-0.212084,0.221691 -0.331417,0.522009 -0.331417,0.835924c0,0 0,0 0,0z"/>
+									   </g>
+								</svg>
+							    <span class = 'post-comment-count'><span><data:i.numberOfComments/></span></span>
+							</span>
+						</div>
+
+					</b:loop>
+					
+				</b:includable>
+				
+				<!-- includables end -->
+			</b:widget>
+
+
+		</b:section>
+
+		<b:section id = 'blog-right'>
+			<b:widget id='HTML2' title='dd' type='HTML' version='3'>
+				<b:includable id='main'>
+					<div>
+						<div>index</div>
+						<div>asdf</div>
+						<div>asdf</div>
+						<div>asdf</div>
+						<div>asdf</div>
+						<div>asdf</div>
+						<div>asdf</div>						
+					</div>
+				</b:includable>
+			</b:widget>
+		</b:section>
+
+		<script type='text/javascript'>
+
+			// document.addEventListener('mousedown', function(e) {
+			// 	console.log(e.target); 
+			// })
+
+			document.getElementById('blog-left').style.marginTop = document.getElementById('Header1').offsetHeight.toString()+"px";
+			document.getElementById('blog-right').style.marginTop = document.getElementById('Header1').offsetHeight.toString()+"px";
+		</script>
+
+	</body>
+</html>
