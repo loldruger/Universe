@@ -121,11 +121,6 @@
 			background-color: #202122;
 		}
 
-		.post-item-meta {
-			display: flex;
-			align-items: center;
-		}
-
 		.post-item-label{
 			position: relative;
 			top: 0.2em;
@@ -308,9 +303,9 @@
 					<b:loop index='index' var='i' values = 'data:posts'>
 						
 						<div expr:id = '"post-item-"+ data:i.id' class = 'post-item'>
-							<span class = 'post-item-meta'>
+							<div class = 'post-item-meta'>
 								<h1><a expr:id = '"post-id-"+ data:i.id' class = 'post-title' expr:href = 'data:i.url'><data:i.title/></a></h1>
-							</span>
+							</div>
 
 							<span class = 'post-item-label'>
 								<b:loop values='data:i.labels' var='label'>
@@ -374,29 +369,37 @@
 				const target = e.target;
 
 				if(target.className === 'post-title') {
-					target.addEventListener('click', (e)=> {
-						const post_id = target.id.split('-')[2];
-						const httpRequest = new XMLHttpRequest();
+					const post_id = target.id.split('-')[2];
 
-						e.preventDefault();
+					if(target.href !== window.location.href) {
+						target.addEventListener('click', (e)=> {
+							const httpRequest = new XMLHttpRequest();
 
-						httpRequest.onreadystatechange = () => {
-							if(httpRequest.readyState === XMLHttpRequest.DONE) {
-								if(httpRequest.status === 200) {
-									const post = JSON.parse(httpRequest.responseText);
-									const page_title = "<data:blog.pageTitle/>: " + post.title;
+							e.preventDefault();
 
-									document.title = page_title;
-									history.pushState({}, page_title, target.href);
-									document.getElementById("post-content-" + post_id).innerHTML = '<div><div>published : ' + post.published + '</div>'+ '<div>last edited : ' + post.updated + '</div></div>' + post.content;
-								} else {
-									document.getElementById("post-content-" + post_id).innerHTML = "BAD REQUEST"
+							httpRequest.onreadystatechange = () => {
+								if(httpRequest.readyState === XMLHttpRequest.DONE) {
+									if(httpRequest.status === 200) {
+										const post = JSON.parse(httpRequest.responseText);
+										const page_title = "<data:blog.pageTitle/>: " + post.title;
+
+										document.title = page_title;
+										history.pushState({}, page_title, target.href);
+										document.getElementById("post-content-" + post_id).innerHTML = '<div><div>published : ' + post.published + '</div>'+ '<div>last edited : ' + post.updated + '</div></div>' + post.content;
+									} else {
+										document.getElementById("post-content-" + post_id).innerHTML = "BAD REQUEST";
+									}
 								}
-							}
-						};
-						httpRequest.open('GET', 'https://www.googleapis.com/blogger/v3/blogs/'+"<data:blog.blogId/>"+'/posts/'+post_id+'?key=AIzaSyAHO1wRv0CrLYzZotA0_3n8cAvPpitYlek');
-						httpRequest.send();
-					});
+							};
+							httpRequest.open('GET', 'https://www.googleapis.com/blogger/v3/blogs/'+"<data:blog.blogId/>"+'/posts/'+post_id+'?key=AIzaSyAHO1wRv0CrLYzZotA0_3n8cAvPpitYlek');
+							httpRequest.send();
+						});
+					} 
+					// else {
+					// 	document.title = "<data:blog.pageTitle/>";
+					// 	history.back();
+					// 	document.getElementById("post-content-" + post_id).innerHTML = "접혔다";
+					// }
 				}
 			})
 
