@@ -93,14 +93,27 @@
 			bottom: 0.6em;
 		}
 
-		#search-filter {
+		#search-filtered {
 			flex: auto;
 		}
 
 		#searchbar {
 			position: relative;
 			display: flex;
+			align-items: center;
 		}	
+
+		#search-select {
+			border-radius: 2em;
+			font-size: 9pt;
+			margin-right: 0.5em;
+			appearance: none;
+			background-color: #3564ac;
+			padding: 0.2em 0.5em;
+			text-align: center;
+			position: relative;
+			top: 1px;
+		}
 
 		#search-input {
 			padding: 0.2em 0.2em 0.2em 1em;
@@ -132,9 +145,17 @@
 			background-color: #202122;
 		}
 
-		.post-item-label{
+		.post-item-label {
 			position: relative;
 			top: 0.2em;
+		}
+
+		.post-date {
+			margin-bottom: 1em;
+		}
+
+		.post-date > div {
+			color: #a48f74;
 		}
 
 		.post-item-etc {
@@ -203,7 +224,7 @@
 			border-radius: 2em;
 			padding-left: 0.19em;
 			padding-right: 0.25em;
-			background-color: #21232C;
+			background-color: #35383e;
 		}
 
 		.post-comment-count>span {
@@ -228,9 +249,10 @@
 			outline: none;
 		}
 
-		.post-content *{
+		.post-content * {
 			width: 100%;
 			height: auto;
+			line-height: 130%;
 		}
 
 		@media ( max-width: 1200px ) {
@@ -256,6 +278,14 @@
 		@media ( max-width: 350px ) {
 			#Header1 {
 				font-size: 40pt;
+			}
+		}
+
+		/*no-preference, light, dark*/
+		@media (prefers-color-scheme: light) {
+			.themed {
+			  background: white;
+			  color: black;
 			}
 		}
 		]]></b:skin>
@@ -289,36 +319,47 @@
 
 		<b:section id = 'blog-main'>
 
-			<b:widget id='Header1' title='' type='Header' version='3'><b:includable id='main'><a expr:href = 'data:blog.homepageUrl'><data:title/></a></b:includable></b:widget>
-			
-			<b:widget id='Blog1' title='' type='Blog' version='3'>
+			<b:widget id = 'Header1' title='' type='Header' version='3'><b:includable id='main'><a expr:href = 'data:blog.homepageUrl'><data:title/></a></b:includable></b:widget>
+
+			<b:widget id = 'Blog1' title='' type='Blog' version='3'>
 				
 				<b:includable id='main'>
 					<div id = "search-container">
-						<div id = "search-filter">
-							<span>asdf</span>
+						<div id = "search-filtered">
+							<span></span>
 						</div>
 						<form id="searchbar">
+							<select id = 'search-select' name = "language" >
+								<option value="none">tags</option>
+								<option value="korean">개나리</option>
+								<option value="english">오징어</option>
+								<option value="chinese">불란서제빵소</option>
+								<option value="spanish">포르투갈커피콩</option>
+							</select>
+							<input id = "search-input" name="abc" type="text" placeholder="search here"/>
 							<button id = 'search-button'>
-								<svg height="32px" version="1.1" viewBox="0 0 32 32" width="32px" xmlns="http://www.w3.org/2000/svg" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><desc/><defs/><g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1"><g fill="#929292" id="icon-111-search"><path d="M19.4271164,20.4271164 C18.0372495,21.4174803 16.3366522,22 14.5,22 C9.80557939,22 6,18.1944206 6,13.5 C6,8.80557939 9.80557939,5 14.5,5 C19.1944206,5 23,8.80557939 23,13.5 C23,15.8472103 22.0486052,17.9722103 20.5104077,19.5104077 L26.5077736,25.5077736 C26.782828,25.782828 26.7761424,26.2238576 26.5,26.5 C26.2219324,26.7780676 25.7796227,26.7796227 25.5077736,26.5077736 L19.4271164,20.4271164 L19.4271164,20.4271164 Z M14.5,21 C18.6421358,21 22,17.6421358 22,13.5 C22,9.35786417 18.6421358,6 14.5,6 C10.3578642,6 7,9.35786417 7,13.5 C7,17.6421358 10.3578642,21 14.5,21 L14.5,21 Z" id="search"/></g></g></svg>							
+								<svg height="32px" version="1.1" viewBox="0 0 32 32" width="32px" xmlns="http://www.w3.org/2000/svg" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><desc/><defs/><g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1"><g fill="#929292" id="icon-111-search"><path d="M19.4271164,20.4271164 C18.0372495,21.4174803 16.3366522,22 14.5,22 C9.80557939,22 6,18.1944206 6,13.5 C6,8.80557939 9.80557939,5 14.5,5 C19.1944206,5 23,8.80557939 23,13.5 C23,15.8472103 22.0486052,17.9722103 20.5104077,19.5104077 L26.5077736,25.5077736 C26.782828,25.782828 26.7761424,26.2238576 26.5,26.5 C26.2219324,26.7780676 25.7796227,26.7796227 25.5077736,26.5077736 L19.4271164,20.4271164 L19.4271164,20.4271164 Z M14.5,21 C18.6421358,21 22,17.6421358 22,13.5 C22,9.35786417 18.6421358,6 14.5,6 C10.3578642,6 7,9.35786417 7,13.5 C7,17.6421358 10.3578642,21 14.5,21 L14.5,21 Z" id="search"/></g></g></svg>
 							</button>
-							<input id="search-input" name="abc" type="text" placeholder="search here"/>						
+							
 						</form>						
 					</div>
 
 
 					<b:if cond = 'data:view.url != data:blog.homepageUrl'>
-						
+						<b:if cond = 'data:view.isPost'> 포스트타입입니다</b:if>
+						<b:if cond = 'data:view.isSearch'> 검색결과인데스</b:if>
+						<b:if cond = 'data:view.isPage'> 페이지이다</b:if>
+						<b:if cond = 'data:view.isError'> 에러페이지이다</b:if>
+					<b:else/>
+						<b:include name = 'list-of-posts'></b:include>
 					</b:if>
-					<b:include name = 'list-of-posts'></b:include>
+					
 
 				</b:includable>
 
 				<!-- includables -->
 				<b:includable id = 'list-of-posts'>
-					
 					<b:loop index='index' var='i' values = 'data:posts'>
-						
 						<div expr:id = '"post-item-"+ data:i.id' class = 'post-item'>
 							<div class = 'post-item-meta'>
 								<h1><a expr:id = '"post-id-"+ data:i.id' class = 'post-title' expr:href = 'data:i.url'><data:i.title/></a></h1>
@@ -354,9 +395,7 @@
 							</div>
 
 						</div>
-
 					</b:loop>
-					
 				</b:includable>
 				
 				<!-- includables end -->
@@ -375,7 +414,7 @@
 						<div>asdf</div>
 						<div>asdf</div>
 						<div>asdf</div>
-						<div>asdf</div>						
+						<div>asdf</div>
 					</div>
 				</b:includable>
 			</b:widget>
@@ -404,7 +443,7 @@
 
 										document.title = page_title;
 										history.pushState({}, page_title, target.href);
-										document.getElementById("post-content-" + post_id).innerHTML = '<div><div>published : ' + post.published + '</div>'+ '<div>last edited : ' + post.updated + '</div></div>' + post.content;
+										document.getElementById("post-content-" + post_id).innerHTML = '<div class = '+ "post-date" +'><div>published : ' + post.published + '</div>'+ '<div>last edited : ' + post.updated + '</div></div>' + post.content;
 										console.log(target.href, " ", window.location.href, " ", target.href===window.location.href);
 									} else {
 										document.getElementById("post-content-" + post_id).innerHTML = "BAD REQUEST";
