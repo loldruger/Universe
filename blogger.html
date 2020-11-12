@@ -54,6 +54,8 @@
 		#Blog1{
 			margin-left: 0.6em;
 			margin-right: 0.6em;
+			display: flex;
+			flex-direction: column;
 		}
 
 		#HTML1 > div {
@@ -84,10 +86,19 @@
 			border-radius: 8px;
 		}
 
-		#search-item {
+		#search-container {
+			display: flex;
+			align-items: center;
 			position: relative;
-			top: -2.5em;
-			float: right;
+			bottom: 0.6em;
+		}
+
+		#search-filter {
+			flex: auto;
+		}
+
+		#searchbar {
+			position: relative;
 			display: flex;
 		}	
 
@@ -283,12 +294,18 @@
 			<b:widget id='Blog1' title='' type='Blog' version='3'>
 				
 				<b:includable id='main'>
-					<form id="search-item">
-						<button id = 'search-button'>
-							<svg height="32px" version="1.1" viewBox="0 0 32 32" width="32px" xmlns="http://www.w3.org/2000/svg" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><desc/><defs/><g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1"><g fill="#929292" id="icon-111-search"><path d="M19.4271164,20.4271164 C18.0372495,21.4174803 16.3366522,22 14.5,22 C9.80557939,22 6,18.1944206 6,13.5 C6,8.80557939 9.80557939,5 14.5,5 C19.1944206,5 23,8.80557939 23,13.5 C23,15.8472103 22.0486052,17.9722103 20.5104077,19.5104077 L26.5077736,25.5077736 C26.782828,25.782828 26.7761424,26.2238576 26.5,26.5 C26.2219324,26.7780676 25.7796227,26.7796227 25.5077736,26.5077736 L19.4271164,20.4271164 L19.4271164,20.4271164 Z M14.5,21 C18.6421358,21 22,17.6421358 22,13.5 C22,9.35786417 18.6421358,6 14.5,6 C10.3578642,6 7,9.35786417 7,13.5 C7,17.6421358 10.3578642,21 14.5,21 L14.5,21 Z" id="search"/></g></g></svg>							
-						</button>
-						<input id="search-input" name="abc" type="text" placeholder="search here"/>						
-					</form>
+					<div id = "search-container">
+						<div id = "search-filter">
+							<span>asdf</span>
+						</div>
+						<form id="searchbar">
+							<button id = 'search-button'>
+								<svg height="32px" version="1.1" viewBox="0 0 32 32" width="32px" xmlns="http://www.w3.org/2000/svg" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" xmlns:xlink="http://www.w3.org/1999/xlink"><title/><desc/><defs/><g fill="none" fill-rule="evenodd" id="Page-1" stroke="none" stroke-width="1"><g fill="#929292" id="icon-111-search"><path d="M19.4271164,20.4271164 C18.0372495,21.4174803 16.3366522,22 14.5,22 C9.80557939,22 6,18.1944206 6,13.5 C6,8.80557939 9.80557939,5 14.5,5 C19.1944206,5 23,8.80557939 23,13.5 C23,15.8472103 22.0486052,17.9722103 20.5104077,19.5104077 L26.5077736,25.5077736 C26.782828,25.782828 26.7761424,26.2238576 26.5,26.5 C26.2219324,26.7780676 25.7796227,26.7796227 25.5077736,26.5077736 L19.4271164,20.4271164 L19.4271164,20.4271164 Z M14.5,21 C18.6421358,21 22,17.6421358 22,13.5 C22,9.35786417 18.6421358,6 14.5,6 C10.3578642,6 7,9.35786417 7,13.5 C7,17.6421358 10.3578642,21 14.5,21 L14.5,21 Z" id="search"/></g></g></svg>							
+							</button>
+							<input id="search-input" name="abc" type="text" placeholder="search here"/>						
+						</form>						
+					</div>
+
 
 					<b:if cond = 'data:view.url != data:blog.homepageUrl'>
 						
@@ -371,6 +388,8 @@
 				if(target.className === 'post-title') {
 					const post_id = target.id.split('-')[2];
 
+					console.log(target.href, " ", window.location.href, " ", target.href===window.location.href);
+					
 					if(target.href !== window.location.href) {
 						target.addEventListener('click', (e)=> {
 							const httpRequest = new XMLHttpRequest();
@@ -386,6 +405,7 @@
 										document.title = page_title;
 										history.pushState({}, page_title, target.href);
 										document.getElementById("post-content-" + post_id).innerHTML = '<div><div>published : ' + post.published + '</div>'+ '<div>last edited : ' + post.updated + '</div></div>' + post.content;
+										console.log(target.href, " ", window.location.href, " ", target.href===window.location.href);
 									} else {
 										document.getElementById("post-content-" + post_id).innerHTML = "BAD REQUEST";
 									}
@@ -403,10 +423,14 @@
 				}
 			})
 
-			document.getElementById('blog-left').style.marginTop = document.getElementById('Header1').offsetHeight.toString()+"px";
-			document.getElementById('blog-right').style.marginTop = document.getElementById('Header1').offsetHeight.toString()+"px";
+			const search_form = document.getElementById('searchbar');
 
-			const search_form = document.getElementById('search-item');
+			const search_bar_h = document.getElementById('search-container');
+			const header_h = document.getElementById('Header1').offsetHeight.toString()+"px";
+
+			search_bar_h.style.marginTop = -search_bar_h.offsetHeight.toString()+"px";
+			document.getElementById('blog-left').style.marginTop = header_h;
+			document.getElementById('blog-right').style.marginTop = header_h;
 
 			search_form.addEventListener('submit', (e) => {
 				e.preventDefault();
