@@ -114,7 +114,6 @@
 			line-height: 2em;
 			text-align: center;
 			appearance: none;
-			order: -1;
 		}
 
 		#search-input {
@@ -130,6 +129,25 @@
 
 		#search-button {
 			background-color: #0000;
+		}
+
+		#menu-button:hover, #search-button:hover {
+			cursor:pointer;
+		}
+
+		#navbar {
+			display: flex;
+			margin-top: 1em;
+		}
+
+		#navbar > span > a {
+			background-color: #515151;
+			padding: 0.5em;
+			border-radius: 2em;
+		}
+
+		#nav-next-post, #nav-home {
+			flex: auto;
 		}
 
 		.post-item {
@@ -153,6 +171,7 @@
 		}
 
 		.post-date > time {
+			display: block;
 			color: #a48f74;
 		}
 
@@ -212,6 +231,10 @@
 			right: 0.35em;
 
 			border-radius: 50%;
+		}
+
+		.post-comment-icon:hover {
+			cursor: pointer;
 		}
 
 		.post-comment-count {
@@ -290,7 +313,7 @@
 	<body>
 
 		<b:section id = 'blog-left'>
-			<b:widget id='HTML1' title='ass' type='HTML' version='3'>
+			<b:widget id='HTML1' title='ass' type='HTML' version='2'>
 				<b:includable id='main'>
 					<nav id = 'category-featured-posts'>
 						<div>featured posts</div>
@@ -315,8 +338,8 @@
 
 
 		<b:section id = 'blog-main'>
-
-			<b:widget id = 'Header1' title='' type='Header' version='3'><b:includable id='main'><a expr:href = 'data:blog.homepageUrl'><data:title/></a></b:includable></b:widget>
+			<!-- /search/?q=label:LABEL1|label:LABEL2|label:LABEL3 -->
+			<b:widget id = 'Header1' title='' type='Header' version='2'><b:includable id='main'><a expr:href = 'data:blog.homepageUrl'><data:title/></a></b:includable></b:widget>
 
 			<b:widget id = 'Label1' title='' type='Label' version='2'>
 				<b:includable id='main'>
@@ -338,14 +361,14 @@
 					<div id = "search-filtered">
 						<span></span>
 					</div>
-					<form id="searchbar" action = 'search'>
-						<input id = "search-input" name = 'q' type="text" placeholder="search here"/>
-						<select id = 'search-category' name = 'label'>
+					<form id="searchbar" expr:action = 'data:blog.searchUrl'>
+						<select id = 'search-category'>
 							<option value="">category</option>
 							<b:loop var='label' values='data:labels'>
 								<option expr:value="data:label.name"><data:label.name/></option>
 							</b:loop>
 						</select>
+						<input id = "search-input" name = 'q' type="text" placeholder="search here"/>
 						<button id = 'search-button'>
 							<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg"> <!-- 4f86ff -->
 								<g>
@@ -362,71 +385,125 @@
 				</b:includable>
 			</b:widget>
 
-			<b:widget id = 'Blog1' title='' type='Blog' version='3'>
+			<b:widget id = 'Blog1' title='' type='Blog' version='2'>
 				
 				<b:includable id='main'>
 
 
-					<b:if cond = 'data:view.isError'> 에러페이지이다</b:if>
+					<b:if cond = 'data:view.isError'>
+						에러페이지이다
+					<b:else/>
+					<!-- <data:view.search.label/> -->
+					<!-- <script>
+						console.log('<data:view.archive.year/>');
+					</script> -->
+
+						<b:loop var = 'i' values = 'data:posts'>
+							<b:include name = 'get-post' var = 'i'></b:include>
+
+							<b:if cond = 'data:view.isSingleItem'>
+								<div id = 'navbar'>
+									<b:if cond = 'data:newerPageUrl'><span id = 'nav-next-post'><a expr:href = 'data:newerPageUrl'> 난 다음글</a></span></b:if>
+									<span id = 'nav-home'><a expr:href = 'data:blog.homepageUrl'> 난 홈일세</a></span>
+									<b:if cond = 'data:olderPageUrl'><span id = 'nav-prev-post'><a expr:href = 'data:olderPageUrl'> 난 이전글</a></span></b:if>								
+								</div>
+
+							</b:if>
+
+								<!-- <b:loop values='0 to data:posts.size - 1' var='newArray'>
+								<script>
+									console.log('hi');
+								</script>
+								
+
+									<b:include name = 'get-post' var = 'j'></b:include>
+								</b:loop> -->
 
 
-					<b:loop var = 'i' values = 'data:posts'>
-						<b:include name = 'get-posts' var = 'i'></b:include>
-					</b:loop>
+						</b:loop>
 
+					</b:if>
+					
 					
 				</b:includable>
 
 				<!-- includables -->
-				<b:includable id = 'get-posts'>
+				<b:includable id = 'get-post'>
 					<article expr:id = '"post-item-"+ data:i.id' class = 'post-item'>
-						<div class = 'post-item-meta'>
-							<h1><a expr:id = '"post-id-"+ data:i.id' class = 'post-title' expr:href = 'data:i.url'><data:i.title/></a></h1>
-						</div>
-
-						<span class = 'post-item-label'>
-							<b:loop values='data:i.labels' var='label'>
-								<span class = 'post-label-separator'><span class = 'post-label-border'><a class = 'post-label' expr:href = 'data:label.url'><data:label.name/></a></span></span>
-							</b:loop>
-						</span>
+						<b:include name = 'get-posts-meta' var = 'i'></b:include>
+						<b:include name = 'get-posts-labels' var = 'i'></b:include>
 
 						<div expr:id = '"post-content-"+ data:i.id' class = 'post-content'>
-							<b:if cond = 'data:view.isSingleItem or data:view.isPage'>
-								<div class = 'post-date'>
-									<time>published : <data:i.date.iso8601/></time>
-									<time>last edited : <data:i.lastUpdated.iso8601/></time>
-								</div>
-								<data:i.body/>
+							<b:if cond = 'data:view.isSingleItem'>
+								<b:include name = 'get-posts-content' var = 'i'></b:include>
+								
+							<b:elseif cond = 'data:view.isPage'/>
+								<b:include name = 'get-posts-content' var = 'i'></b:include>
+								
 							<b:else/>
 								<summary><data:i.snippets.short/></summary>
 							</b:if>
 						</div>
 
 						<div class = 'post-item-etc'>
-							<span class = 'post-item-comment'>
-								<svg class = 'post-comment-icon' width="25" height="25" xmlns="http://www.w3.org/2000/svg" clip-rule="evenodd">
-									<g>
-										<title>background</title>
-										<rect fill="none" id="canvas_background" height="27" width="27" y="-1" x="-1"/>
-									</g>
-									<g>
-										<title>Comments</title>
-										<path stroke="null" id="svg_1" fill="#41e277" fill-rule="nonzero" d="m3.262229,1l18.097833,0c1.244226,0 2.262229,1.064119 2.262229,2.364708l0,14.188248c0,1.300589 -1.018003,2.364708 -2.262229,2.364708l-15.835604,0c0,0 -2.459609,2.571029 -3.751907,3.921868c-0.129513,0.13538 -0.324064,0.17558 -0.493166,0.102865c-0.169102,-0.073306 -0.279385,-0.24593 -0.279385,-0.437471c0,-4.417274 0,-20.140218 0,-20.140218c0,-1.300589 1.018003,-2.364708 2.262229,-2.364708zm2.262229,13.005894c0,0.313324 0.119333,0.614233 0.331417,0.835924c0.212084,0.221691 0.499953,0.34643 0.799698,0.34643c2.556319,0 8.754827,0 11.311145,0c0.299745,0 0.587614,-0.124738 0.799698,-0.34643c0.212084,-0.221691 0.331417,-0.5226 0.331417,-0.835924c0,-0.313915 -0.119333,-0.614233 -0.331417,-0.835924c-0.212084,-0.222283 -0.499953,-0.34643 -0.799698,-0.34643c-2.556319,0 -8.754827,0 -11.311145,0c-0.299745,0 -0.587614,0.124147 -0.799698,0.34643c-0.212084,0.221691 -0.331417,0.522009 -0.331417,0.835924c0,0 0,0 0,0zm0,-3.547062c0,0.313324 0.119333,0.614233 0.331417,0.835924c0.212084,0.221691 0.499953,0.34643 0.799698,0.34643c2.556319,0 8.754827,0 11.311145,0c0.299745,0 0.587614,-0.124738 0.799698,-0.34643c0.212084,-0.221691 0.331417,-0.5226 0.331417,-0.835924c0,-0.313915 -0.119333,-0.614233 -0.331417,-0.835924c-0.212084,-0.222283 -0.499953,-0.34643 -0.799698,-0.34643c-2.556319,0 -8.754827,0 -11.311145,0c-0.299745,0 -0.587614,0.124147 -0.799698,0.34643c-0.212084,0.221691 -0.331417,0.522009 -0.331417,0.835924c0,0 0,0 0,0zm0,-3.547062c0,0.313324 0.119333,0.614233 0.331417,0.835924c0.212084,0.221691 0.499953,0.34643 0.799698,0.34643c2.556319,0 8.754827,0 11.311145,0c0.299745,0 0.587614,-0.124738 0.799698,-0.34643c0.212084,-0.221691 0.331417,-0.5226 0.331417,-0.835924c0,-0.313915 -0.119333,-0.614233 -0.331417,-0.835924c-0.212084,-0.222283 -0.499953,-0.34643 -0.799698,-0.34643c-2.556319,0 -8.754827,0 -11.311145,0c-0.299745,0 -0.587614,0.124147 -0.799698,0.34643c-0.212084,0.221691 -0.331417,0.522009 -0.331417,0.835924c0,0 0,0 0,0z"/>
-									</g>
-								</svg>
-								<span class = 'post-comment-count'><span><data:i.numberOfComments/></span></span>
-							</span>
-
-							<span class = 'post-item-author'>
-								<span><img class = 'post-author-photo' expr:src = 'data:i.author.authorPhoto.image' width="32" height="32"></img></span>
-								<span class = 'post-author'><data:i.author.name/></span>
-							</span>								
+							<b:include name = 'get-posts-comments' var = 'i'></b:include>
+							<b:include name = 'get-posts-author' var = 'i'></b:include>
 						</div>
 					</article>
 				</b:includable>
 
-				<b:includable id = 'get-posts-next'>
-					
+				<b:includable id = 'get-posts-meta'>
+					<div class = 'post-item-meta'>
+						<h1><a expr:id = '"post-id-"+ data:i.id' class = 'post-title' expr:href = 'data:i.url'><data:i.title/></a></h1>
+					</div>
+				</b:includable>
+
+				<b:includable id = 'get-posts-labels'>
+					<span class = 'post-item-label'>
+						<b:loop values='data:i.labels' var='label'>
+							<span class = 'post-label-separator'><span class = 'post-label-border'><a class = 'post-label' expr:href = 'data:label.url'><data:label.name/></a></span></span>
+						</b:loop>
+					</span>
+				</b:includable>
+
+				<b:includable id = 'get-posts-content'>
+					<div class = 'post-date'>
+						<time>published : <data:i.date.iso8601/></time>
+						<time>last edited : <data:i.lastUpdated.iso8601/></time>
+					</div>
+					<data:i.body/>
+				</b:includable>
+
+				<b:includable id = 'get-posts-comments'>
+					<span class = 'post-item-comment'>
+						<svg class = 'post-comment-icon' width="25" height="25" xmlns="http://www.w3.org/2000/svg" clip-rule="evenodd">
+							<g>
+								<title>background</title>
+								<rect fill="none" id="canvas_background" height="27" width="27" y="-1" x="-1"/>
+							</g>
+							<g>
+								<title>Comments</title>
+								<path stroke="null" id="svg_1" fill="#41e277" fill-rule="nonzero" d="m3.262229,1l18.097833,0c1.244226,0 2.262229,1.064119 2.262229,2.364708l0,14.188248c0,1.300589 -1.018003,2.364708 -2.262229,2.364708l-15.835604,0c0,0 -2.459609,2.571029 -3.751907,3.921868c-0.129513,0.13538 -0.324064,0.17558 -0.493166,0.102865c-0.169102,-0.073306 -0.279385,-0.24593 -0.279385,-0.437471c0,-4.417274 0,-20.140218 0,-20.140218c0,-1.300589 1.018003,-2.364708 2.262229,-2.364708zm2.262229,13.005894c0,0.313324 0.119333,0.614233 0.331417,0.835924c0.212084,0.221691 0.499953,0.34643 0.799698,0.34643c2.556319,0 8.754827,0 11.311145,0c0.299745,0 0.587614,-0.124738 0.799698,-0.34643c0.212084,-0.221691 0.331417,-0.5226 0.331417,-0.835924c0,-0.313915 -0.119333,-0.614233 -0.331417,-0.835924c-0.212084,-0.222283 -0.499953,-0.34643 -0.799698,-0.34643c-2.556319,0 -8.754827,0 -11.311145,0c-0.299745,0 -0.587614,0.124147 -0.799698,0.34643c-0.212084,0.221691 -0.331417,0.522009 -0.331417,0.835924c0,0 0,0 0,0zm0,-3.547062c0,0.313324 0.119333,0.614233 0.331417,0.835924c0.212084,0.221691 0.499953,0.34643 0.799698,0.34643c2.556319,0 8.754827,0 11.311145,0c0.299745,0 0.587614,-0.124738 0.799698,-0.34643c0.212084,-0.221691 0.331417,-0.5226 0.331417,-0.835924c0,-0.313915 -0.119333,-0.614233 -0.331417,-0.835924c-0.212084,-0.222283 -0.499953,-0.34643 -0.799698,-0.34643c-2.556319,0 -8.754827,0 -11.311145,0c-0.299745,0 -0.587614,0.124147 -0.799698,0.34643c-0.212084,0.221691 -0.331417,0.522009 -0.331417,0.835924c0,0 0,0 0,0zm0,-3.547062c0,0.313324 0.119333,0.614233 0.331417,0.835924c0.212084,0.221691 0.499953,0.34643 0.799698,0.34643c2.556319,0 8.754827,0 11.311145,0c0.299745,0 0.587614,-0.124738 0.799698,-0.34643c0.212084,-0.221691 0.331417,-0.5226 0.331417,-0.835924c0,-0.313915 -0.119333,-0.614233 -0.331417,-0.835924c-0.212084,-0.222283 -0.499953,-0.34643 -0.799698,-0.34643c-2.556319,0 -8.754827,0 -11.311145,0c-0.299745,0 -0.587614,0.124147 -0.799698,0.34643c-0.212084,0.221691 -0.331417,0.522009 -0.331417,0.835924c0,0 0,0 0,0z"/>
+							</g>
+						</svg>
+						<span class = 'post-comment-count'><span><data:i.numberOfComments/></span></span>
+					</span>
+				</b:includable>
+
+				<b:includable id = 'get-posts-author'>
+					<span class = 'post-item-author'>
+						<span><img class = 'post-author-photo' expr:src = 'data:i.author.authorPhoto.image' width="32" height="32"></img></span>
+						<span class = 'post-author'><data:i.author.name/></span>
+					</span>
+				</b:includable>
+
+				<b:includable id = 'previousPageLink'>
+					<a class='blog-pager-newer-link'
+						expr:href='data:newerPageUrl'
+						expr:id='data:widget.instanceId + "_blog-pager-newer-link"'
+						expr:title='data:messages.newerPosts'>
+						<data:messages.newerPosts/>
+					</a>
 				</b:includable>
 				<!-- includables end -->
 			</b:widget>
@@ -434,7 +511,7 @@
 		</b:section>
 
 		<b:section id = 'blog-right'>
-			<b:widget id='HTML2' title='dd' type='HTML' version='3'>
+			<b:widget id='HTML2' title='dd' type='HTML' version='2'>
 				<b:includable id='main'>
 					<aside>
 						<div>index</div>
