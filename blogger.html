@@ -173,6 +173,7 @@
 		.post-item-label {
 			position: relative;
 			top: 0.4em;
+			margin-bottom: 1em;
 		}
 
 		.post-date {
@@ -191,15 +192,19 @@
 			margin-top: 0.5em;
 		}
 
+		.spacer {
+			flex: auto;
+		}
+
 		.post-item-author {
 			display: flex;
 			align-items: center;
+			margin-left: 0.4em;
 		}
 
 		.post-item-comment {
-			display: inline-flex;
+			display: flex;
 			align-items: center;
-			flex: auto;
 		}
 
 		.post-title {
@@ -211,6 +216,16 @@
 		.post-content {
 			margin-top: 1em;
 			text-align: justify;
+		}
+
+		.post-content > summary {
+			display: none;
+		}
+
+		.post-content * {
+			width: 100%;
+			height: auto;
+			line-height: 160%;
 		}
 
 		.post-label-separator {
@@ -277,12 +292,6 @@
 
 		a:active, a:focus {
 			outline: none;
-		}
-
-		.post-content * {
-			width: 100%;
-			height: auto;
-			line-height: 160%;
 		}
 
 		@media ( max-width: 1200px ) {
@@ -399,7 +408,6 @@
 				
 				<b:includable id='main'>
 
-
 					<b:if cond = 'data:view.isError'>
 						에러페이지이다
 					<b:else/>
@@ -412,46 +420,6 @@
 							<b:include name = 'get-post' var = 'i'></b:include>
 
 							<b:if cond = 'data:view.isSingleItem'>
-								<div id = 'navbar'>
-									<b:if cond = 'data:newerPageUrl'>
-										<a id = 'nav-next-post' expr:href = 'data:newerPageUrl'>
-											<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg">
-
-												<g>
-													<title>background</title>
-													<rect fill="none" id="canvas_background" height="402" width="582" y="-1" x="-1"/>
-												</g>
-												<g>
-													<title>Layer 1</title>
-													<path id="svg_1" fill="#519dff" d="m7.701,14.276l9.586,-9.585c0.879,-0.878 2.317,-0.878 3.195,0l0.801,0.8c0.878,0.877 0.878,2.316 0,3.194l-7.315,7.315l7.315,7.315c0.878,0.878 0.878,2.317 0,3.194l-0.801,0.8c-0.878,0.879 -2.316,0.879 -3.195,0l-9.586,-9.587c-0.472,-0.47 -0.681,-1.102 -0.647,-1.722c-0.034,-0.62 0.175,-1.252 0.647,-1.724z"/>
-												</g>
-											</svg>
-											<span>next post</span>
-										</a>
-									<b:else/>
-										<span id = 'nav-next-post'></span>
-									</b:if>
-
-									<span id = 'nav-home'></span>
-									<b:if cond = 'data:olderPageUrl'>
-										<a id = 'nav-prev-post' expr:href = 'data:olderPageUrl'> 
-											<span>prev post</span>
-											<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg">
-												<g>
-													<title>background</title>
-													<rect fill="none" id="canvas_background" height="402" width="582" y="-1" x="-1"/>
-												</g>
-												<g>
-													<title>Layer 1</title>
-													<path stroke="null" id="svg_3" fill="#519dff" d="m22.791002,14.275625l-9.580404,-9.585c-0.878487,-0.878 -2.315647,-0.878 -3.193135,0l-0.800532,0.8c-0.877487,0.877 -0.877487,2.316 0,3.194l7.310729,7.315l-7.310729,7.315c-0.877487,0.878 -0.877487,2.317 0,3.194l0.800532,0.8c0.877487,0.879 2.314648,0.879 3.193135,0l9.580404,-9.587c0.471724,-0.47 0.680602,-1.102 0.646622,-1.722c0.03398,-0.62 -0.174898,-1.252 -0.646622,-1.724z"/>
-												</g>
-											</svg>
-										</a>
-									<b:else/>
-										<span id = 'nav-prev-post'></span>
-									</b:if>
-								</div>
-
 							</b:if>
 
 								<!-- <b:loop values='0 to data:posts.size - 1' var='newArray'>
@@ -464,6 +432,7 @@
 								</b:loop> -->
 
 						</b:loop>
+						<b:include name = 'display-page-navigater'></b:include>
 					</b:if>
 				</b:includable>
 
@@ -471,6 +440,7 @@
 				<b:includable id = 'get-post'>
 					<article expr:id = '"post-item-"+ data:i.id' class = 'post-item'>
 						<b:include name = 'get-posts-meta' var = 'i'></b:include>
+
 						<b:include name = 'get-posts-labels' var = 'i'></b:include>
 
 						<div expr:id = '"post-content-"+ data:i.id' class = 'post-content'>
@@ -486,8 +456,10 @@
 						</div>
 
 						<div class = 'post-item-etc'>
-							<b:include name = 'get-posts-comments' var = 'i'></b:include>
 							<b:include name = 'get-posts-author' var = 'i'></b:include>
+							<span class = 'spacer'></span>
+							<b:include name = 'get-posts-comments' var = 'i'></b:include>
+							<span expr:id = '"post-summary-"+data:i.id'>see summary</span>
 						</div>
 					</article>
 				</b:includable>
@@ -499,11 +471,11 @@
 				</b:includable>
 
 				<b:includable id = 'get-posts-labels'>
-					<span class = 'post-item-label'>
+					<div class = 'post-item-label'>
 						<b:loop values='data:i.labels' var='label'>
 							<span class = 'post-label-separator'><span class = 'post-label-border'><a class = 'post-label' expr:href = 'data:label.url'><data:label.name/></a></span></span>
 						</b:loop>
-					</span>
+					</div>
 				</b:includable>
 
 				<b:includable id = 'get-posts-content'>
@@ -535,6 +507,57 @@
 						<span><img class = 'post-author-photo' expr:src = 'data:i.author.authorPhoto.image' width="32" height="32"></img></span>
 						<span class = 'post-author'><data:i.author.name/></span>
 					</span>
+				</b:includable>
+
+				<b:includable id = 'display-page-navigater'>
+					<div id = 'navbar'>
+						<b:if cond = 'data:newerPageUrl'>
+							<a id = 'nav-next-post' expr:href = 'data:newerPageUrl'>
+								<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+
+									<g>
+										<title>background</title>
+										<rect fill="none" id="canvas_background" height="402" width="582" y="-1" x="-1"/>
+									</g>
+									<g>
+										<title>Layer 1</title>
+										<path id="svg_1" fill="#519dff" d="m7.701,14.276l9.586,-9.585c0.879,-0.878 2.317,-0.878 3.195,0l0.801,0.8c0.878,0.877 0.878,2.316 0,3.194l-7.315,7.315l7.315,7.315c0.878,0.878 0.878,2.317 0,3.194l-0.801,0.8c-0.878,0.879 -2.316,0.879 -3.195,0l-9.586,-9.587c-0.472,-0.47 -0.681,-1.102 -0.647,-1.722c-0.034,-0.62 0.175,-1.252 0.647,-1.724z"/>
+									</g>
+								</svg>
+								<b:if cond = 'data:view.isSingleItem'>
+									<span>next post</span>
+								<b:else/>
+									<span>next page</span>
+								</b:if>
+								
+							</a>
+						<b:else/>
+							<span id = 'nav-next-post'></span>
+						</b:if>
+
+						<span id = 'nav-home'></span>
+						<b:if cond = 'data:olderPageUrl'>
+							<a id = 'nav-prev-post' expr:href = 'data:olderPageUrl'>
+								<b:if cond = 'data:view.isSingleItem'>
+									<span>prev post</span>
+								<b:else/>
+									<span>prev page</span>
+								</b:if>
+								<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+									<g>
+										<title>background</title>
+										<rect fill="none" id="canvas_background" height="402" width="582" y="-1" x="-1"/>
+									</g>
+									<g>
+										<title>Layer 1</title>
+										<path stroke="null" id="svg_3" fill="#519dff" d="m22.791002,14.275625l-9.580404,-9.585c-0.878487,-0.878 -2.315647,-0.878 -3.193135,0l-0.800532,0.8c-0.877487,0.877 -0.877487,2.316 0,3.194l7.310729,7.315l-7.310729,7.315c-0.877487,0.878 -0.877487,2.317 0,3.194l0.800532,0.8c0.877487,0.879 2.314648,0.879 3.193135,0l9.580404,-9.587c0.471724,-0.47 0.680602,-1.102 0.646622,-1.722c0.03398,-0.62 -0.174898,-1.252 -0.646622,-1.724z"/>
+									</g>
+								</svg>
+							</a>
+						<b:else/>
+							<span id = 'nav-prev-post'></span>
+						</b:if>
+					</div>
 				</b:includable>
 				<!-- includables end -->
 			</b:widget>
