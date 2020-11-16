@@ -116,6 +116,10 @@
 			appearance: none;
 		}
 
+		#search-category option {
+			color: grey;
+		}
+
 		#search-input {
 			padding: 0.2em 2.2em 0.2em 1em;
 			background: #0000;
@@ -137,17 +141,22 @@
 
 		#navbar {
 			display: flex;
-			margin-top: 1em;
+			align-items: center;
 		}
 
-		#navbar > span > a {
-			background-color: #515151;
-			padding: 0.5em;
-			border-radius: 2em;
-		}
-
-		#nav-next-post, #nav-home {
+		#nav-home {
 			flex: auto;
+		}
+
+		#nav-next-post, #nav-prev-post {
+			display: flex;
+			align-items: center;
+			flex: intial;
+		}
+
+		#nav-next-post > span, #nav-prev-post > span {
+			position: relative;
+			bottom: 2px;
 		}
 
 		.post-item {
@@ -163,11 +172,12 @@
 
 		.post-item-label {
 			position: relative;
-			top: 0.2em;
+			top: 0.4em;
 		}
 
 		.post-date {
 			margin-bottom: 1em;
+			font-size: 9pt;
 		}
 
 		.post-date > time {
@@ -194,7 +204,7 @@
 
 		.post-title {
 			color: #519dff;
-			font-size: 20pt;
+			font-size: 24pt;
 			font-weight: bold;
 		}
 
@@ -403,9 +413,43 @@
 
 							<b:if cond = 'data:view.isSingleItem'>
 								<div id = 'navbar'>
-									<b:if cond = 'data:newerPageUrl'><span id = 'nav-next-post'><a expr:href = 'data:newerPageUrl'> 난 다음글</a></span></b:if>
-									<span id = 'nav-home'><a expr:href = 'data:blog.homepageUrl'> 난 홈일세</a></span>
-									<b:if cond = 'data:olderPageUrl'><span id = 'nav-prev-post'><a expr:href = 'data:olderPageUrl'> 난 이전글</a></span></b:if>								
+									<b:if cond = 'data:newerPageUrl'>
+										<a id = 'nav-next-post' expr:href = 'data:newerPageUrl'>
+											<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+
+												<g>
+													<title>background</title>
+													<rect fill="none" id="canvas_background" height="402" width="582" y="-1" x="-1"/>
+												</g>
+												<g>
+													<title>Layer 1</title>
+													<path id="svg_1" fill="#519dff" d="m7.701,14.276l9.586,-9.585c0.879,-0.878 2.317,-0.878 3.195,0l0.801,0.8c0.878,0.877 0.878,2.316 0,3.194l-7.315,7.315l7.315,7.315c0.878,0.878 0.878,2.317 0,3.194l-0.801,0.8c-0.878,0.879 -2.316,0.879 -3.195,0l-9.586,-9.587c-0.472,-0.47 -0.681,-1.102 -0.647,-1.722c-0.034,-0.62 0.175,-1.252 0.647,-1.724z"/>
+												</g>
+											</svg>
+											<span>next post</span>
+										</a>
+									<b:else/>
+										<span id = 'nav-next-post'></span>
+									</b:if>
+
+									<span id = 'nav-home'></span>
+									<b:if cond = 'data:olderPageUrl'>
+										<a id = 'nav-prev-post' expr:href = 'data:olderPageUrl'> 
+											<span>prev post</span>
+											<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+												<g>
+													<title>background</title>
+													<rect fill="none" id="canvas_background" height="402" width="582" y="-1" x="-1"/>
+												</g>
+												<g>
+													<title>Layer 1</title>
+													<path stroke="null" id="svg_3" fill="#519dff" d="m22.791002,14.275625l-9.580404,-9.585c-0.878487,-0.878 -2.315647,-0.878 -3.193135,0l-0.800532,0.8c-0.877487,0.877 -0.877487,2.316 0,3.194l7.310729,7.315l-7.310729,7.315c-0.877487,0.878 -0.877487,2.317 0,3.194l0.800532,0.8c0.877487,0.879 2.314648,0.879 3.193135,0l9.580404,-9.587c0.471724,-0.47 0.680602,-1.102 0.646622,-1.722c0.03398,-0.62 -0.174898,-1.252 -0.646622,-1.724z"/>
+												</g>
+											</svg>
+										</a>
+									<b:else/>
+										<span id = 'nav-prev-post'></span>
+									</b:if>
 								</div>
 
 							</b:if>
@@ -419,12 +463,8 @@
 									<b:include name = 'get-post' var = 'j'></b:include>
 								</b:loop> -->
 
-
 						</b:loop>
-
 					</b:if>
-					
-					
 				</b:includable>
 
 				<!-- includables -->
@@ -495,15 +535,6 @@
 						<span><img class = 'post-author-photo' expr:src = 'data:i.author.authorPhoto.image' width="32" height="32"></img></span>
 						<span class = 'post-author'><data:i.author.name/></span>
 					</span>
-				</b:includable>
-
-				<b:includable id = 'previousPageLink'>
-					<a class='blog-pager-newer-link'
-						expr:href='data:newerPageUrl'
-						expr:id='data:widget.instanceId + "_blog-pager-newer-link"'
-						expr:title='data:messages.newerPosts'>
-						<data:messages.newerPosts/>
-					</a>
 				</b:includable>
 				<!-- includables end -->
 			</b:widget>
