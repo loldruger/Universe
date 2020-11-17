@@ -190,6 +190,10 @@
 			padding: 0.5em;
 			margin-bottom: 0.4em;
 		}
+
+		#display-floating-container > span:hover {
+			cursor: pointer;
+		}
 		
 		#display-floating-container > span > span {
 			position: relative;
@@ -392,8 +396,10 @@
 			#Header1 {
 				font-size: 34pt;
 			}
+		}
 
-			.post-see-summary > span, .post-author{
+		@media ( max-width: 380px ) {
+			.post-see-summary > span {
 				display: none;
 		}
 
@@ -539,7 +545,7 @@
 									 <path fill="#ffe245" stroke="null" d="m11.99312,0.0344l-7.97248,0c-1.1012,0 -1.98315,0.89192 -1.98315,1.99312l-0.00997,15.94495c0,1.1012 0.88196,1.99312 1.98315,1.99312l11.96868,0c1.1012,0 1.99312,-0.89192 1.99312,-1.99312l0,-11.95871l-5.97936,-5.97936zm1.99312,15.94495l-7.97248,0l0,-1.99312l7.97248,0l0,1.99312zm0,-3.98624l-7.97248,0l0,-1.99312l7.97248,0l0,1.99312zm-2.98968,-4.9828l0,-5.48108l5.48108,5.48108l-5.48108,0z"/>
 									</g>
 								   </svg>
-								<span>snippet</span>
+								<span>see snippet</span>
 							</span>
 						</div>
 					</article>
