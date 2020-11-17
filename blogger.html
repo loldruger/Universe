@@ -4,6 +4,7 @@
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<title><data:blog.pageTitle/></title>
+		<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css"/>
 		<b:skin><![CDATA[
 		@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
 
@@ -14,7 +15,7 @@
 			font-size: 100%;
 			font: inherit;
 			vertical-align: baseline;
-			font-family: 'Noto Sans KR', sans-serif; 
+			font-family: 'NanumSquare', sans-serif;
 			color: #fff;
 		}
 		/* HTML5 display-role reset for older browsers */
@@ -142,38 +143,54 @@
 		#navbar {
 			display: flex;
 			align-items: center;
-		}
-
-		#nav-home {
-			flex: auto;
+			margin-bottom: 0.6em;
 		}
 
 		#nav-next-post, #nav-prev-post {
 			display: flex;
 			align-items: center;
-			flex: intial;
 		}
 
 		#nav-next-post > span, #nav-prev-post > span {
 			position: relative;
-			bottom: 2px;
+		}
+
+		#display-floating-container {
+			display: flex;
+			flex-direction: column;
+			position: fixed;
+			bottom: 1.8em;
+			right: 0.8em;
+		}
+		  
+		#display-floating-container > span {
+			background-color: #231566e0;
+			border-radius: 50%;
+			padding: 0.5em;
+			margin-bottom: 0.4em;
+		}
+		
+		#display-floating-container > span > span {
+			position: relative;
 		}
 
 		.post-item {
-			background-color: #171717;
+			background-color: #3c42643d;
 			margin: 0 0 0.6em;
 			padding: 1.1em;
-			border-radius: 6px;
-		}
-
-		.post-item:hover {
-			background-color: #202122;
+			border-radius: 20px;
 		}
 
 		.post-item-label {
 			position: relative;
 			top: 0.4em;
 			margin-bottom: 1em;
+		}
+
+		.post-item-etc {
+			display: flex;
+			align-items: center;
+			margin-top: 2em;
 		}
 
 		.post-date {
@@ -186,12 +203,6 @@
 			color: #a48f74;
 		}
 
-		.post-item-etc {
-			display: flex;
-			align-items: center;
-			margin-top: 0.5em;
-		}
-
 		.spacer {
 			flex: auto;
 		}
@@ -199,6 +210,7 @@
 		.post-item-author {
 			display: flex;
 			align-items: center;
+			margin-right: 0.4em;
 			margin-left: 0.4em;
 		}
 
@@ -207,9 +219,19 @@
 			align-items: center;
 		}
 
+		.post-see-summary {
+			color: #ffe245;
+			display: flex;
+			align-items: center;
+		}
+
+		.post-see-summary > svg {
+			margin-right: 5px;
+		}
+
 		.post-title {
 			color: #519dff;
-			font-size: 24pt;
+			font-size: 21pt;
 			font-weight: bold;
 		}
 
@@ -233,12 +255,12 @@
 		}
 
 		.post-label-border {
-			border: solid 1px #35383e;
-			background-color: #35383e;
+			border: solid 1px #2e2f6099;
+			background-color: #2e2f6099;
 			border-radius: 2em;
 			padding-left: 0.5em;
 			padding-right: 0.5em;
-			font-size: 8pt;
+			font-size: 9pt;
 		}
 
 		.post-label-border:hover {
@@ -248,7 +270,6 @@
 		
 		.post-label {
 		  	position: relative;
-			bottom: 0.5px;
 		}
 		
 		.post-author-photo {
@@ -264,17 +285,16 @@
 
 		.post-comment-count {
 			position: relative;
-			left: -0.7em;
-			bottom: -0.6em;
+			left: -7px;
+			bottom: -7px;
 			border-radius: 2em;
 			padding-left: 0.19em;
 			padding-right: 0.25em;
 			background-color: #35383e;
 		}
 
-		.post-comment-count>span {
+		.post-comment-count > span {
 			position: relative;
-			bottom: 1.7px;
 			left: 0.5px;
 			font-size: 10pt;
 			color: #fff;
@@ -292,6 +312,17 @@
 
 		a:active, a:focus {
 			outline: none;
+		}
+
+		header {
+			color: #519dff;
+		}
+
+		footer {
+			background-color: #8b99b44f;
+			padding: 0.6em 0.6em 12em 0.6em;
+			border-top-left-radius: 20px;
+			border-top-right-radius: 20px;
 		}
 
 		@media ( max-width: 1200px ) {
@@ -358,7 +389,7 @@
 
 		<b:section id = 'blog-main'>
 			<!-- /search/?q=label:LABEL1|label:LABEL2|label:LABEL3 -->
-			<b:widget id = 'Header1' title='' type='Header' version='2'><b:includable id='main'><a expr:href = 'data:blog.homepageUrl'><data:title/></a></b:includable></b:widget>
+			<b:widget id = 'Header1' title='' type='Header' version='2'><b:includable id='main'><a expr:href = 'data:blog.homepageUrl'><header><data:title/></header></a></b:includable></b:widget>
 
 			<b:widget id = 'Label1' title='' type='Label' version='2'>
 				<b:includable id='main'>
@@ -391,14 +422,10 @@
 						<button id = 'search-button'>
 							<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg"> <!-- 4f86ff -->
 								<g>
-									<title>background</title>
-									<rect fill="none" id="canvas_background" height="402" width="582" y="-1" x="-1"/>
-								</g>
-								<g>
 									<title>Layer 1</title>
 									<path fill="#4f86ff" id="XMLID_223_" d="m27.414,24.586l-5.077,-5.077c1.049,-1.581 1.663,-3.474 1.663,-5.509c0,-5.514 -4.486,-10 -10,-10s-10,4.486 -10,10s4.486,10 10,10c2.035,0 3.928,-0.614 5.509,-1.663l5.077,5.077c0.78,0.781 2.048,0.781 2.828,0c0.781,-0.781 0.781,-2.047 0,-2.828zm-20.414,-10.586c0,-3.86 3.14,-7 7,-7s7,3.14 7,7s-3.14,7 -7,7s-7,-3.14 -7,-7z"/>
 								</g>
-								</svg>
+							</svg>
 						</button>
 					</form>
 				</b:includable>
@@ -433,6 +460,10 @@
 
 						</b:loop>
 						<b:include name = 'display-page-navigater'></b:include>
+						<b:include name = 'display-floating-container'></b:include>
+						<footer>
+							푸터풋ㅋ
+						</footer>
 					</b:if>
 				</b:includable>
 
@@ -457,9 +488,20 @@
 
 						<div class = 'post-item-etc'>
 							<b:include name = 'get-posts-author' var = 'i'></b:include>
+
+							<b:include name = 'get-posts-comments' var = 'i'></b:include>							
 							<span class = 'spacer'></span>
-							<b:include name = 'get-posts-comments' var = 'i'></b:include>
-							<span expr:id = '"post-summary-"+data:i.id'>see summary</span>
+
+							<span expr:id = '"post-summary-"+data:i.id' class = 'post-see-summary'>
+								<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+									<g>
+									 <title>Layer 1</title>
+									 <path fill="none" d="m0,0l48,0l0,48l-48,0l0,-48z"/>
+									 <path fill="#ffe245" stroke="null" d="m11.99312,0.0344l-7.97248,0c-1.1012,0 -1.98315,0.89192 -1.98315,1.99312l-0.00997,15.94495c0,1.1012 0.88196,1.99312 1.98315,1.99312l11.96868,0c1.1012,0 1.99312,-0.89192 1.99312,-1.99312l0,-11.95871l-5.97936,-5.97936zm1.99312,15.94495l-7.97248,0l0,-1.99312l7.97248,0l0,1.99312zm0,-3.98624l-7.97248,0l0,-1.99312l7.97248,0l0,1.99312zm-2.98968,-4.9828l0,-5.48108l5.48108,5.48108l-5.48108,0z"/>
+									</g>
+								   </svg>
+								snippet
+							</span>
 						</div>
 					</article>
 				</b:includable>
@@ -488,17 +530,41 @@
 
 				<b:includable id = 'get-posts-comments'>
 					<span class = 'post-item-comment'>
-						<svg class = 'post-comment-icon' width="25" height="25" xmlns="http://www.w3.org/2000/svg" clip-rule="evenodd">
+
+						<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
 							<g>
-								<title>background</title>
-								<rect fill="none" id="canvas_background" height="27" width="27" y="-1" x="-1"/>
+							 <title>Layer 1</title>
+							 <path fill="#4987ff" d="m18.00461,0l-16.0041,0c-1.10528,0 -1.99051,0.89406 -1.99051,1.99791l-0.01,17.98119l4.00102,-3.99582l14.00359,0c1.10528,0 2.00051,-0.89406 2.00051,-1.99791l0,-11.98746c0,-1.10385 -0.89523,-1.99791 -2.00051,-1.99791zm-11.00282,8.99059l-2.00051,0l0,-1.99791l2.00051,0l0,1.99791zm4.00102,0l-2.00051,0l0,-1.99791l2.00051,0l0,1.99791zm4.00102,0l-2.00051,0l0,-1.99791l2.00051,0l0,1.99791z"/>
 							</g>
-							<g>
-								<title>Comments</title>
-								<path stroke="null" id="svg_1" fill="#41e277" fill-rule="nonzero" d="m3.262229,1l18.097833,0c1.244226,0 2.262229,1.064119 2.262229,2.364708l0,14.188248c0,1.300589 -1.018003,2.364708 -2.262229,2.364708l-15.835604,0c0,0 -2.459609,2.571029 -3.751907,3.921868c-0.129513,0.13538 -0.324064,0.17558 -0.493166,0.102865c-0.169102,-0.073306 -0.279385,-0.24593 -0.279385,-0.437471c0,-4.417274 0,-20.140218 0,-20.140218c0,-1.300589 1.018003,-2.364708 2.262229,-2.364708zm2.262229,13.005894c0,0.313324 0.119333,0.614233 0.331417,0.835924c0.212084,0.221691 0.499953,0.34643 0.799698,0.34643c2.556319,0 8.754827,0 11.311145,0c0.299745,0 0.587614,-0.124738 0.799698,-0.34643c0.212084,-0.221691 0.331417,-0.5226 0.331417,-0.835924c0,-0.313915 -0.119333,-0.614233 -0.331417,-0.835924c-0.212084,-0.222283 -0.499953,-0.34643 -0.799698,-0.34643c-2.556319,0 -8.754827,0 -11.311145,0c-0.299745,0 -0.587614,0.124147 -0.799698,0.34643c-0.212084,0.221691 -0.331417,0.522009 -0.331417,0.835924c0,0 0,0 0,0zm0,-3.547062c0,0.313324 0.119333,0.614233 0.331417,0.835924c0.212084,0.221691 0.499953,0.34643 0.799698,0.34643c2.556319,0 8.754827,0 11.311145,0c0.299745,0 0.587614,-0.124738 0.799698,-0.34643c0.212084,-0.221691 0.331417,-0.5226 0.331417,-0.835924c0,-0.313915 -0.119333,-0.614233 -0.331417,-0.835924c-0.212084,-0.222283 -0.499953,-0.34643 -0.799698,-0.34643c-2.556319,0 -8.754827,0 -11.311145,0c-0.299745,0 -0.587614,0.124147 -0.799698,0.34643c-0.212084,0.221691 -0.331417,0.522009 -0.331417,0.835924c0,0 0,0 0,0zm0,-3.547062c0,0.313324 0.119333,0.614233 0.331417,0.835924c0.212084,0.221691 0.499953,0.34643 0.799698,0.34643c2.556319,0 8.754827,0 11.311145,0c0.299745,0 0.587614,-0.124738 0.799698,-0.34643c0.212084,-0.221691 0.331417,-0.5226 0.331417,-0.835924c0,-0.313915 -0.119333,-0.614233 -0.331417,-0.835924c-0.212084,-0.222283 -0.499953,-0.34643 -0.799698,-0.34643c-2.556319,0 -8.754827,0 -11.311145,0c-0.299745,0 -0.587614,0.124147 -0.799698,0.34643c-0.212084,0.221691 -0.331417,0.522009 -0.331417,0.835924c0,0 0,0 0,0z"/>
-							</g>
-						</svg>
+						   </svg>
+
 						<span class = 'post-comment-count'><span><data:i.numberOfComments/></span></span>
+
+						<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+							<g>
+							 <title>Layer 1</title>
+							 <path fill="none" d="m0,0l48,0l0,48l-48,0l0,-48z"/>
+							 <path fill="#80d279" d="m9.99165,0c-5.52038,0 -9.99165,4.47126 -9.99165,9.99165c0,5.51539 4.47126,9.99165 9.99165,9.99165c5.51539,0 9.99165,-4.47626 9.99165,-9.99165c0,-5.52038 -4.47626,-9.99165 -9.99165,-9.99165zm-1.99833,14.98747l-4.99582,-4.99582l1.41382,-1.41382l3.58201,3.58201l7.57866,-7.57866l1.41382,1.41382l-8.99248,8.99248z"/>
+							</g>
+						   </svg>
+
+						   <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+							<g>
+							 <title>Layer 1</title>
+							 <path fill="none" d="m0,0l48,0l0,48l-48,0l0,-48z"/>
+							 <path fill="#ebba46" d="m9.99329,0.00071c-5.52101,0 -9.99279,4.47177 -9.99279,9.99279s4.47177,9.99279 9.99279,9.99279s9.99279,-4.47177 9.99279,-9.99279s-4.47177,-9.99279 -9.99279,-9.99279zm0.99928,16.98773l-1.99856,0l0,-1.99856l1.99856,0l0,1.99856zm2.06351,-7.73941l-0.89435,0.91934c-0.71948,0.71948 -1.16916,1.32404 -1.16916,2.82296l-1.99856,0l0,-0.49964c0,-1.1042 0.44968,-2.10348 1.16916,-2.82796l1.2441,-1.25909c0.35974,-0.35974 0.58458,-0.85938 0.58458,-1.40898c0,-1.1042 -0.89435,-1.99856 -1.99856,-1.99856s-1.99856,0.89435 -1.99856,1.99856l-1.99856,0c0,-2.20841 1.78871,-3.99711 3.99711,-3.99711s3.99711,1.78871 3.99711,3.99711c0,0.87937 -0.35474,1.67379 -0.93433,2.25337z"/>
+							</g>
+						   </svg>
+
+						   <svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+
+							<g>
+							 <title>Layer 1</title>
+							 <path fill="none" d="m0,0l48,0l0,48l-48,0l0,-48z"/>
+							 <path fill="#ff6969" transform="rotate(-45, 9.98828, 9.98828)" d="m9.9878,-0.00032c-5.51863,0 -9.98847,4.46984 -9.98847,9.98847s4.46984,9.98847 9.98847,9.98847s9.98847,-4.46984 9.98847,-9.98847s-4.46984,-9.98847 -9.98847,-9.98847zm4.99423,10.98732l-3.99539,0l0,3.99539l-1.99769,0l0,-3.99539l-3.99539,0l0,-1.99769l3.99539,0l0,-3.99539l1.99769,0l0,3.99539l3.99539,0l0,1.99769z"/>
+							</g>
+						   </svg>
+
 					</span>
 				</b:includable>
 
@@ -535,7 +601,7 @@
 							<span id = 'nav-next-post'></span>
 						</b:if>
 
-						<span id = 'nav-home'></span>
+						<span class = 'spacer'></span>
 						<b:if cond = 'data:olderPageUrl'>
 							<a id = 'nav-prev-post' expr:href = 'data:olderPageUrl'>
 								<b:if cond = 'data:view.isSingleItem'>
@@ -559,8 +625,59 @@
 						</b:if>
 					</div>
 				</b:includable>
+
+				<b:includable id = 'display-floating-container'>
+					<span id = 'display-floating-container'>
+						<span id = 'floating-guide-top'>
+							<span>
+								<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+
+									<g>
+									 <title>background</title>
+									 <rect fill="none" id="canvas_background" height="34" width="34" y="-1" x="-1"/>
+									</g>
+									<g>
+									 <title>Layer 1</title>
+									 <polyline style="--darkreader-inline-fill:#0f374f;" fill="#fff" points="29.699996948242188,21.850006580352783 27.699996948242188,23.850006580352783 16,12.149994373321533 4.3000030517578125,23.850006580352783 2.3000030517578125,21.850006580352783 16,8.149993419647217 29.699996948242188,21.850006580352783 " id="Fill-35" class="st0"/>
+									</g>
+								   </svg>
+							</span>
+						</span>
+
+						<span id = 'floating-guide-menu'>
+							<span>
+								<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+
+									<g>
+									 <title>background</title>
+									 <rect fill="none" id="canvas_background" height="34" width="34" y="-1" x="-1"/>
+									</g>
+									<g>
+									 <title>Layer 1</title>
+									 <polygon style="--darkreader-inline-fill:#0f374f;" fill="#fff" points="2.910691261291504,14.522954307496548 29.089309692382812,14.522954307496548 29.089309692382812,17.777049385011196 2.910691261291504,17.777049385011196 " id="Fill-19" class="st0"/>
+									 <polygon style="--darkreader-inline-fill:#0f374f;" fill="#fff" points="2.9106903076171875,23.302350364625454 29.089309692382812,23.302350364625454 29.089309692382812,26.556441627442837 2.9106903076171875,26.556441627442837 " id="svg_3" class="st0"/>
+									 <polygon style="--darkreader-inline-fill:#0f374f;" fill="#fff" points="2.9106903076171875,6.012322269380093 29.089309692382812,6.012322269380093 29.089309692382812,9.266411148011684 2.9106903076171875,9.266411148011684 " id="svg_4" class="st0"/>
+									</g>
+								   </svg>
+							</span>
+						</span>
+
+						<span id = 'floating-guide-search'>
+							<span>
+								<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg"> <!-- 4f86ff -->
+									<g>
+										<title>Layer 1</title>
+										<path fill="#fff" id="XMLID_223_" d="m27.414,24.586l-5.077,-5.077c1.049,-1.581 1.663,-3.474 1.663,-5.509c0,-5.514 -4.486,-10 -10,-10s-10,4.486 -10,10s4.486,10 10,10c2.035,0 3.928,-0.614 5.509,-1.663l5.077,5.077c0.78,0.781 2.048,0.781 2.828,0c0.781,-0.781 0.781,-2.047 0,-2.828zm-20.414,-10.586c0,-3.86 3.14,-7 7,-7s7,3.14 7,7s-3.14,7 -7,7s-7,-3.14 -7,-7z"/>
+									</g>
+								</svg>
+							</span>
+						</span>
+					</span>
+
+				</b:includable>
 				<!-- includables end -->
 			</b:widget>
+
 
 		</b:section>
 
