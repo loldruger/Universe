@@ -200,6 +200,10 @@
 			top: 2px;
 		}
 
+		#comment-form {
+			width: 100%;
+		}
+
 		.post-item {
 			background-color: #3c42643d;
 			margin: 0 0 0.6em;
@@ -216,7 +220,6 @@
 		.post-item-etc {
 			display: flex;
 			align-items: center;
-			margin-top: 2em;
 		}
 
 		.post-date {
@@ -253,6 +256,10 @@
 
 		.post-see-summary > svg {
 			margin-right: 5px;
+		}
+
+		.post-see-summary > span {
+			font-size: 13pt;
 		}
 
 		.post-title {
@@ -334,7 +341,31 @@
 			font-size: 10pt;
 			color: #fff;
 		}
-		  
+		
+		.comment-item {
+			color: #fff;
+			margin-top: 1em;
+			display: flex;
+		}
+
+		.comment-author-img {
+			border-radius: 50%;
+			margin-right: 0.5em;
+			flex: none;
+		}
+
+		.comment-body {
+			background-color: #2e3f59;
+			flex: auto;
+			padding: 1em;
+			border-radius: 10px;
+		}
+
+		#comment-editor {
+			border-radius: 10px;
+			margin-top: 1em;
+		}
+
 		body {
 			background-color: #000;
 			display: flex;
@@ -358,7 +389,7 @@
 
 		footer {
 			background-color: #3a42514f;
-			padding: 1.1em 1.1em 12em 1.1em;
+			padding: 1.1em;
 			border-top-left-radius: 20px;
 			border-top-right-radius: 20px;
 			color: #fff;
@@ -489,7 +520,7 @@
 					</script> -->
 
 						<b:loop var = 'i' values = 'data:posts'>
-							<b:include name = 'get-post' var = 'i'></b:include>
+							<b:include name = 'get-post' data = 'i'></b:include>
 
 							<b:if cond = 'data:view.isSingleItem'>
 							</b:if>
@@ -513,10 +544,9 @@
 				</b:includable>
 
 				<!-- includables -->
-				<b:includable id = 'get-post'>
+				<b:includable id = 'get-post' var = 'i'>
 					<article expr:id = '"post-item-"+ data:i.id' class = 'post-item'>
 						<b:include name = 'get-posts-meta' var = 'i'></b:include>
-
 						<b:include name = 'get-posts-labels' var = 'i'></b:include>
 
 						<div expr:id = '"post-content-"+ data:i.id' class = 'post-content'>
@@ -544,11 +574,45 @@
 									 <path fill="none" d="m0,0l48,0l0,48l-48,0l0,-48z"/>
 									 <path fill="#ffe245" stroke="null" d="m11.99312,0.0344l-7.97248,0c-1.1012,0 -1.98315,0.89192 -1.98315,1.99312l-0.00997,15.94495c0,1.1012 0.88196,1.99312 1.98315,1.99312l11.96868,0c1.1012,0 1.99312,-0.89192 1.99312,-1.99312l0,-11.95871l-5.97936,-5.97936zm1.99312,15.94495l-7.97248,0l0,-1.99312l7.97248,0l0,1.99312zm0,-3.98624l-7.97248,0l0,-1.99312l7.97248,0l0,1.99312zm-2.98968,-4.9828l0,-5.48108l5.48108,5.48108l-5.48108,0z"/>
 									</g>
-								   </svg>
+								</svg>
 								<span>see snippet</span>
 							</span>
 						</div>
+
+					<b:loop var = 'j' values = 'data:i.comments'>
+						<b:include name = 'get-comment' var = 'j'></b:include>
+					</b:loop>
+					
+					<b:if cond = 'data:view.isSingleItem'>
+						<b:if cond='data:i.allowNewComments'>
+							<div class='comment-form'>
+								<a name='comment-form'/>
+								<b:if cond='data:this.messages.blogComment != ""'>
+									<p><data:this.messages.blogComment/></p>
+								</b:if>
+								<a expr:href='data:i.commentFormIframeSrc' id='comment-editor-src'/>
+								<iframe allowtransparency='true'
+										class='blogger-iframe-colorize blogger-comment-from-post'
+										expr:height='data:cmtIframeInitialHeight ?: "90px"'
+										frameborder='0'
+										id='comment-editor'
+										name='comment-editor'
+										src=''
+										width='100%'/>
+								<data:i.cmtfpIframe/>
+								<script type='text/javascript'>
+									BLOG_CMT_createIframe('<data:i.appRpcRelayPath/>');
+								</script>
+							</div>
+
+							
+						<b:else/>
+							<data:i.noNewCommentsText/>
+						</b:if>
+					</b:if>
+
 					</article>
+
 				</b:includable>
 
 				<b:includable id = 'get-posts-meta'>
@@ -623,6 +687,20 @@
 						<span class = 'post-author'><data:i.author.name/></span>
 					</span>
 				</b:includable>
+
+				<b:includable id = 'get-comment'>
+					<div expr:id = '"comment-id-" + data:j.id' class = 'comment-item' expr:type = 'data:j.authorUserType'>
+						<img class = 'comment-author-img' expr:src="data:j.authorAvatarSrc" width="25" height="25" alt="reply"/>
+
+						<div class = 'comment-body'>
+							<div><data:j.author/></div>	
+							<data:j.timestamp/>
+							<data:j.body/>
+							<data:j.inReplyTo/>
+						</div>
+					</div>
+				</b:includable>
+
 
 				<b:includable id = 'display-page-navigater'>
 					<div id = 'navbar'>
