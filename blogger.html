@@ -352,10 +352,12 @@
 			border-radius: 50%;
 			margin-right: 0.5em;
 			flex: none;
+			position: relative;
+			top: 4px;
 		}
 
 		.comment-body {
-			background-color: #2e3f59;
+			background-color: #3a3b688a;
 			flex: auto;
 			padding: 1em;
 			border-radius: 10px;
@@ -395,6 +397,16 @@
 			color: #fff;
 		}
 
+		.comment-triangle {
+			width: 0;
+			height: 0;
+			border-top: 7px solid transparent;
+			border-right: 11px solid #3a3b688a;
+			border-bottom: 7px solid transparent;
+			position: relative;
+			top: 9px;
+		}
+		
 		@media ( max-width: 1080px ) {
 			#Header1 {
 		  		font-size: 50pt;
@@ -691,12 +703,12 @@
 				<b:includable id = 'get-comment'>
 					<div expr:id = '"comment-id-" + data:j.id' class = 'comment-item' expr:type = 'data:j.authorUserType'>
 						<img class = 'comment-author-img' expr:src="data:j.authorAvatarSrc" width="25" height="25" alt="reply"/>
-
+						<span class = 'comment-triangle'></span>
 						<div class = 'comment-body'>
 							<div><data:j.author/></div>	
-							<data:j.timestamp/>
+							<div><data:j.timestamp/></div>
 							<data:j.body/>
-							<data:j.inReplyTo/>
+							<!-- <data:j.inReplyTo/> -->
 						</div>
 					</div>
 				</b:includable>
