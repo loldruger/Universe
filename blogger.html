@@ -363,6 +363,21 @@
 			border-radius: 10px;
 		}
 
+		.comment-meta {
+			display: flex;
+			flex-flow: wrap;
+			margin-bottom: 0.6em;
+		}
+
+		.comment-meta > div {
+			color: #ffe245;
+		}
+
+		.comment-meta > time {
+			color: #8e877f;
+			font-size: 8pt;
+		}
+
 		#comment-editor {
 			border-radius: 10px;
 			margin-top: 1em;
@@ -702,11 +717,22 @@
 
 				<b:includable id = 'get-comment'>
 					<div expr:id = '"comment-id-" + data:j.id' class = 'comment-item' expr:type = 'data:j.authorUserType'>
-						<img class = 'comment-author-img' expr:src="data:j.authorAvatarSrc" width="25" height="25" alt="reply"/>
+
+						<b:if cond = 'data:j.authorUserType == "anonymous"'>
+							<svg class = 'comment-author-img' width="25" height="25" xmlns="http://www.w3.org/2000/svg">
+								 <path fill="#ffffff" stroke="null" d="m12.5,0c-6.90625,0 -12.5,5.59375 -12.5,12.5s5.59375,12.5 12.5,12.5s12.5,-5.59375 12.5,-12.5s-5.59375,-12.5 -12.5,-12.5zm0,3.75c2.06875,0 3.75,1.68125 3.75,3.75c0,2.075 -1.68125,3.75 -3.75,3.75s-3.75,-1.675 -3.75,-3.75c0,-2.06875 1.68125,-3.75 3.75,-3.75zm0,17.75c-3.13125,0 -5.88125,-1.6 -7.5,-4.025c0.03125,-2.48125 5.00625,-3.85 7.5,-3.85s7.4625,1.36875 7.5,3.85c-1.61875,2.425 -4.36875,4.025 -7.5,4.025z"/>
+							   </svg>
+						<b:else/>
+							<img class = 'comment-author-img' expr:src="data:j.authorAvatarSrc" width="25" height="25" alt="reply"/>
+						</b:if>
 						<span class = 'comment-triangle'></span>
 						<div class = 'comment-body'>
-							<div><data:j.author/></div>	
-							<div><data:j.timestamp/></div>
+							<div class = 'comment-meta'>
+								<div><data:j.author/></div>
+								<span class = 'spacer'></span>
+								<time><data:j.timestamp/></time>
+							</div>
+
 							<data:j.body/>
 							<!-- <data:j.inReplyTo/> -->
 						</div>
