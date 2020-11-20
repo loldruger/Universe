@@ -44,6 +44,7 @@
 
 		:root {
 			--point-color: #6163d2;
+			--reply-color: #bcc0ca;
 		}
 
 		#Header1 {
@@ -232,7 +233,7 @@
 			color: #8e877f;
 		}
 
-		.spacer {
+		.spacer, .icon.user, .icon.user.blog-author {
 			flex: auto;
 		}
 
@@ -342,42 +343,100 @@
 			color: #fff;
 		}
 		
+		.comment {
+			display: flex;
+			flex-wrap: wrap;
+			margin-top: 1em;
+		}
+
+		.comment-replies {
+			flex: 100%;
+		}
+
 		.comment-item {
 			color: #fff;
 			margin-top: 1em;
 			display: flex;
 		}
 
-		.comment-author-img {
+		.comment-replybox-single {
+			flex: 100%;
+		}
+
+		.comment-reply {
+			display: flex;
+			align-items: center;
+		}
+
+		.comment-reply > span {
+			position: relative;
+			top: 2px;
+			color: var(--reply-color);
+		}
+
+		.comment-reply > svg {
+			margin-left: 0.5em;
+		}
+
+		.comment-reply path {
+			fill: var(--reply-color);
+		}
+
+		.comment-author-img, .avatar-image-container > img {
 			border-radius: 50%;
 			margin-right: 0.5em;
 			flex: none;
 			position: relative;
 			top: 4px;
+			width: 25px;
+			height: 25px;
 		}
+		
 
-		.comment-body {
+		.comment-body, .comment-block {
 			background-color: #3a3b688a;
 			flex: auto;
 			padding: 1em;
 			border-radius: 10px;
+
 		}
 
-		.comment-meta {
+		.comment-button-reply {
+			margin-top: 0.5em;
+			display: flex;
+		}
+
+		.continue {
+			order: -1;
+			display: flex;
+			align-items: flex-end;
+			margin-top: 0.9em;
+		}
+
+		.thread-chrome.thread-expanded {
+			display: flex;
+		}
+
+		.comment-meta, .comment-header {
 			display: flex;
 			flex-flow: wrap;
 			margin-bottom: 0.6em;
 		}
 
-		.comment-meta > div {
+		.comment-meta > div, .user, .user > a {
 			color: #ffe245;
 		}
 
-		.comment-meta > time {
+		.comment-meta > time, .datetime.secondary-text > a {
 			color: #8e877f;
 			font-size: 8pt;
 		}
 
+		.comment-content {
+			color: white;
+			margin-bottom: 0.6em;
+		}
+		
 		#comment-editor {
 			border-radius: 10px;
 			margin-top: 1em;
@@ -453,6 +512,10 @@
 		@media ( max-width: 420px ) {
 			#Header1 {
 				font-size: 34pt;
+			}
+
+			.icon.user, .icon.user.blog-author {
+				flex: 100%;
 			}
 		}
 
@@ -596,22 +659,42 @@
 
 							<span expr:id = '"post-summary-"+data:i.id' class = 'post-see-summary'>
 								<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-									<g>
-									 <title>Layer 1</title>
-									 <path fill="none" d="m0,0l48,0l0,48l-48,0l0,-48z"/>
 									 <path fill="#ffe245" stroke="null" d="m11.99312,0.0344l-7.97248,0c-1.1012,0 -1.98315,0.89192 -1.98315,1.99312l-0.00997,15.94495c0,1.1012 0.88196,1.99312 1.98315,1.99312l11.96868,0c1.1012,0 1.99312,-0.89192 1.99312,-1.99312l0,-11.95871l-5.97936,-5.97936zm1.99312,15.94495l-7.97248,0l0,-1.99312l7.97248,0l0,1.99312zm0,-3.98624l-7.97248,0l0,-1.99312l7.97248,0l0,1.99312zm-2.98968,-4.9828l0,-5.48108l5.48108,5.48108l-5.48108,0z"/>
-									</g>
 								</svg>
 								<span>see snippet</span>
 							</span>
 						</div>
 
-					<b:loop var = 'j' values = 'data:i.comments'>
-						<b:include name = 'get-comment' var = 'j'></b:include>
-					</b:loop>
 					
 					<b:if cond = 'data:view.isSingleItem'>
+						<b:loop var = 'j' values = 'data:i.comments'>
+							<b:include name = 'get-comment' var = 'j'></b:include>
+							<script>
+								console.log('<data:j.id/>');
+							</script>
+						</b:loop>
+						<script>
+							console.log('--------------');
+						</script>
+						<b:loop var = 'j' values = 'data:i.comments'>
+							<b:if cond = 'data:j.inReplyTo'>
+								<script>
+									console.log('<data:j.inReplyTo/>');
+								</script>
+							</b:if>
+						
+						</b:loop>
+
+<!-- <data:i.commentHtml/> -->
 						<b:if cond='data:i.allowNewComments'>
+							<!-- <b:if cond='data:i.embedCommentForm'></b:if> -->
+							<div id="top-continue" class="continue">
+								<a class="comment-reply" target="_self" href="javascript:;">
+									Add comment
+								</a>
+							</div>
+							<div class="comment-replybox-thread" id="top-ce"></div>
+							
 							<div class='comment-form'>
 								<a name='comment-form'/>
 								<b:if cond='data:this.messages.blogComment != ""'>
@@ -733,12 +816,24 @@
 								<time><data:j.timestamp/></time>
 							</div>
 
-							<data:j.body/>
-							<!-- <data:j.inReplyTo/> -->
+							<div><data:j.body/></div>
+
+							<b:if cond = '!data:j.inReplyTo'>
+								<div class = 'comment-button-reply'>
+									<div class = 'spacer'></div>
+									<a expr:id = '"reply-" + data:j.id' class="comment-reply" target="_self" expr:data-comment-id="data:j.id" href="javascript:;">
+										<svg width="23" height="19" xmlns="http://www.w3.org/2000/svg">
+											 <path stroke="null" fill-rule="evenodd" fill="#bcc0ca" d="m8.33696,18.177385c0.538722,-0.505252 0.538722,-1.324408 0,-1.82966l-3.163054,-2.966447l7.705594,0c5.333145,0 9.656496,-4.054641 9.656496,-9.056314l0,-2.587518c0,-0.714543 -0.617602,-1.293759 -1.379499,-1.293759c-0.761898,0 -1.379499,0.579216 -1.379499,1.293759l0,2.587518c0,3.572586 -3.088147,6.468796 -6.897497,6.468796l-7.705594,0l3.163054,-2.96646c0.538722,-0.505213 0.538722,-1.324421 0,-1.829634c-0.538736,-0.505213 -1.41218,-0.505213 -1.950916,0l-5.517998,5.175024c-0.538722,0.505252 -0.538722,1.324408 0,1.82966l5.517998,5.175037c0.538736,0.505239 1.41218,0.505239 1.950916,0z" clip-rule="evenodd"/>
+										</svg>
+									</a>
+								</div>
+
+								<script> document.getElementById("reply-"+"<data:j.id/>").addEventListener('click', function(a) { a = Nl(a.currentTarget); Rl(this, a || void 0) }) </script>
+								<div expr:id = '"c" + data:j.id + "-ce"' class = 'comment-replybox-single'></div>
+							</b:if>
 						</div>
 					</div>
 				</b:includable>
-
 
 				<b:includable id = 'display-page-navigater'>
 					<div id = 'navbar'>
