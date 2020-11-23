@@ -44,7 +44,7 @@
 
 		:root {
 			--point-color: #6163d2;
-			--reply-color: #bcc0ca;
+			--reply-color: #dadeea;
 		}
 
 		#Header1 {
@@ -233,7 +233,7 @@
 			color: #8e877f;
 		}
 
-		.spacer, .icon.user, .icon.user.blog-author {
+		.spacer {
 			flex: auto;
 		}
 
@@ -359,6 +359,31 @@
 			display: flex;
 		}
 
+		.comment-body {
+			background-color: #3a3b688a;
+			flex: auto;
+			padding: 1em;
+			border-radius: 10px;
+		}
+
+		.comment-item[type="true"] > .comment-body {
+			background-color: #3a3b6836;
+		}
+		
+		.comment-triangle {
+			width: 0;
+			height: 0;
+			border-top: 7px solid transparent;
+			border-right: 11px solid #3a3b688a;
+			border-bottom: 7px solid transparent;
+			position: relative;
+			top: 9px;
+		}
+
+		.comment-item[type="true"] > .comment-triangle {
+			border-right: 11px solid #3a3b6836;
+		}
+
 		.comment-replybox-single {
 			flex: 100%;
 		}
@@ -366,6 +391,13 @@
 		.comment-reply {
 			display: flex;
 			align-items: center;
+			color: var(--reply-color);
+			padding: 0.5em;
+			padding-left: 0.7em;
+			padding-right: 0.7em;
+			border-radius: 2em;
+			background-color: #4b56777a;
+			font-size: 10pt;
 		}
 
 		.comment-reply > span {
@@ -382,7 +414,7 @@
 			fill: var(--reply-color);
 		}
 
-		.comment-author-img, .avatar-image-container > img {
+		.comment-author-img {
 			border-radius: 50%;
 			margin-right: 0.5em;
 			flex: none;
@@ -391,43 +423,37 @@
 			width: 25px;
 			height: 25px;
 		}
-		
 
-		.comment-body, .comment-block {
-			background-color: #3a3b688a;
-			flex: auto;
-			padding: 1em;
-			border-radius: 10px;
-
+		.comment-button {
+			display: flex;
+			align-items: center;
 		}
 
 		.comment-button-reply {
-			margin-top: 0.5em;
 			display: flex;
 		}
 
-		.continue {
-			order: -1;
-			display: flex;
-			align-items: flex-end;
-			margin-top: 0.9em;
+		.comment-button-delete {
+			margin-left: 7px;
+			position: relative;
+			top: 1px;
 		}
 
-		.thread-chrome.thread-expanded {
-			display: flex;
+		.comment-button-delete path {
+			fill: #c43434;
 		}
 
-		.comment-meta, .comment-header {
+		.comment-meta {
 			display: flex;
 			flex-flow: wrap;
 			margin-bottom: 0.6em;
 		}
 
-		.comment-meta > div, .user, .user > a {
+		.comment-meta > div {
 			color: #ffe245;
 		}
 
-		.comment-meta > time, .datetime.secondary-text > a {
+		.comment-meta > time {
 			color: #8e877f;
 			font-size: 8pt;
 		}
@@ -471,16 +497,6 @@
 			color: #fff;
 		}
 
-		.comment-triangle {
-			width: 0;
-			height: 0;
-			border-top: 7px solid transparent;
-			border-right: 11px solid #3a3b688a;
-			border-bottom: 7px solid transparent;
-			position: relative;
-			top: 9px;
-		}
-		
 		@media ( max-width: 1080px ) {
 			#Header1 {
 		  		font-size: 50pt;
@@ -665,25 +681,113 @@
 							</span>
 						</div>
 
-					
 					<b:if cond = 'data:view.isSingleItem'>
-						<b:loop var = 'j' values = 'data:i.comments'>
-							<b:include name = 'get-comment' var = 'j'></b:include>
-							<script>
-								console.log('<data:j.id/>');
-							</script>
-						</b:loop>
 						<script>
-							console.log('--------------');
+							let comments = new Map();
 						</script>
-						<b:loop var = 'j' values = 'data:i.comments'>
-							<b:if cond = 'data:j.inReplyTo'>
-								<script>
-									console.log('<data:j.inReplyTo/>');
-								</script>
-							</b:if>
-						
-						</b:loop>
+
+						<div id = 'comment-container'>
+							<b:loop index = 'index' var = 'j' values = 'data:i.comments'>
+								<!-- <b:include name = 'get-comment' var = 'j'></b:include> -->
+
+								<b:if cond = '!data:j.inReplyTo'>
+									<script>
+										comments.set('<data:j.id/>', { 
+											id: '<data:j.id/>',
+											replyTo: undefined,
+											authorAvataSrc: '<data:j.authorAvatarSrc/>',
+											authorType: '<data:j.authorUserType/>',
+											author: '<data:j.author/>',
+											date: '<data:j.timestamp/>',
+											body: '<data:j.body/>',
+											deleteURL: '<data:j.deleteUrl/>',
+											replies: new Array()
+										});
+									</script>
+								<b:else/>
+									<script>
+										comments.get('<data:j.inReplyTo/>').replies.push({
+											id: '<data:j.id/>',
+											replyTo: '<data:j.inReplyTo/>',
+											authorAvataSrc: '<data:j.authorAvatarSrc/>',
+											authorType: '<data:j.authorUserType/>',
+											author: '<data:j.author/>',
+											date: '<data:j.timestamp/>',
+											body: '<data:j.body/>',
+											deleteURL: '<data:j.deleteUrl/>',
+										});
+									</script>
+								</b:if>
+							</b:loop>							
+						</div>
+
+
+						<script>
+							const form_comment_list = function(comment) {
+								let string = `<div id = 'comment-id-${comment.id}' class = 'comment-item' type = '${comment.replyTo!==undefined}'>`;
+
+								if(comment.authorType === 'anonymous') {
+									string += `
+										<svg class = 'comment-author-img' width="25" height="25" xmlns="http://www.w3.org/2000/svg">
+											<path fill="#ffffff" stroke="null" d="m12.5,0c-6.90625,0 -12.5,5.59375 -12.5,12.5s5.59375,12.5 12.5,12.5s12.5,-5.59375 12.5,-12.5s-5.59375,-12.5 -12.5,-12.5zm0,3.75c2.06875,0 3.75,1.68125 3.75,3.75c0,2.075 -1.68125,3.75 -3.75,3.75s-3.75,-1.675 -3.75,-3.75c0,-2.06875 1.68125,-3.75 3.75,-3.75zm0,17.75c-3.13125,0 -5.88125,-1.6 -7.5,-4.025c0.03125,-2.48125 5.00625,-3.85 7.5,-3.85s7.4625,1.36875 7.5,3.85c-1.61875,2.425 -4.36875,4.025 -7.5,4.025z"/>
+										</svg>
+										`;
+								} else {
+									string += `<img class = 'comment-author-img' src="${comment.authorAvataSrc}" width="25" height="25" alt="reply"/>`;
+								}
+
+								string += `
+									<span class = 'comment-triangle'></span>
+									<div class = 'comment-body'>
+										<div class = 'comment-meta'>
+											<div>${comment.author}</div>
+											<span class = 'spacer'></span>
+											<time>${comment.date}</time>
+									</div>
+
+									<div>${comment.body}</div>
+									<div class = 'comment-button'><div class = 'spacer'></div>
+									`;
+
+									if(!comment.replyTo) {
+										string += `<div class = 'comment-button-reply'>
+											<a id = 'reply-${comment.id}' class="comment-reply" target="_self" data-comment-id="${comment.id}" href="javascript:;">
+												reply
+
+												<svg width="17" height="14" xmlns="http://www.w3.org/2000/svg">
+
+												<path stroke="null" clip-rule="evenodd" d="m6.24592,13.18375c0.38391,-0.36006 0.38391,-0.94381 0,-1.30387l-2.25408,-2.11398l5.49122,0c3.80056,0 6.8815,-2.88945 6.8815,-6.45379l0,-1.84393c0,-0.50921 -0.44013,-0.92197 -0.98307,-0.92197c-0.54295,0 -0.98307,0.41276 -0.98307,0.92197l0,1.84393c0,2.54593 -2.2007,4.60985 -4.91536,4.60985l-5.49122,0l2.25408,-2.11398c0.38391,-0.36003 0.38391,-0.94382 0,-1.30385c-0.38391,-0.36003 -1.00636,-0.36003 -1.39027,0l-3.93228,3.68787c-0.38391,0.36006 -0.38391,0.94381 0,1.30387l3.93228,3.68788c0.38391,0.36005 1.00636,0.36005 1.39027,0z" fill-rule="evenodd" />
+
+												</svg>
+											</a>
+										</div>
+										`
+									}
+									string += `<a class = 'comment-button-delete' href='${comment.deleteURL}'>
+										<svg width="17" height="17" xmlns="http://www.w3.org/2000/svg">
+ <path stroke="null" d="m3.072066,14.83259c0,0.995121 0.81419,1.809311 1.809311,1.809311l7.237246,0c0.995121,0 1.809311,-0.81419 1.809311,-1.809311l0,-10.855869l-10.855869,0l0,10.855869zm2.229976,-6.441149l1.280088,-1.280088l1.91787,1.91787l1.91787,-1.91787l1.280088,1.280088l-1.91787,1.91787l1.91787,1.91787l-1.280088,1.280088l-1.91787,-1.91787l-1.91787,1.91787l-1.280088,-1.280088l1.91787,-1.91787l-1.91787,-1.91787zm6.364253,-7.128687l-0.904656,-0.904656l-4.523279,0l-0.904656,0.904656l-3.166295,0l0,1.809311l12.66518,0l0,-1.809311l-3.166295,0z"/>
+
+</svg></a></div></div></div>`;
+
+									if(!comment.replyTo) {
+										string += `<div id = 'c${comment.id}-ce' class = 'comment-replybox-single'></div>`
+									}
+								return string;
+							}
+
+							for (const i of comments) {
+								if(!i.replyTo) {
+									document.getElementById('comment-container').innerHTML += form_comment_list(i[1]);
+									document.getElementById("reply-"+i[1].id).addEventListener('click', function(a) { a = Nl(a.currentTarget); Rl(this, a || void 0) })
+								}
+
+								for (const j of i[1].replies) {
+									document.getElementById('comment-container').innerHTML += form_comment_list(j);
+								}
+							}
+
+						</script>
+
 
 <!-- <data:i.commentHtml/> -->
 						<b:if cond='data:i.allowNewComments'>
@@ -822,6 +926,7 @@
 								<div class = 'comment-button-reply'>
 									<div class = 'spacer'></div>
 									<a expr:id = '"reply-" + data:j.id' class="comment-reply" target="_self" expr:data-comment-id="data:j.id" href="javascript:;">
+										reply
 										<svg width="23" height="19" xmlns="http://www.w3.org/2000/svg">
 											 <path stroke="null" fill-rule="evenodd" fill="#bcc0ca" d="m8.33696,18.177385c0.538722,-0.505252 0.538722,-1.324408 0,-1.82966l-3.163054,-2.966447l7.705594,0c5.333145,0 9.656496,-4.054641 9.656496,-9.056314l0,-2.587518c0,-0.714543 -0.617602,-1.293759 -1.379499,-1.293759c-0.761898,0 -1.379499,0.579216 -1.379499,1.293759l0,2.587518c0,3.572586 -3.088147,6.468796 -6.897497,6.468796l-7.705594,0l3.163054,-2.96646c0.538722,-0.505213 0.538722,-1.324421 0,-1.829634c-0.538736,-0.505213 -1.41218,-0.505213 -1.950916,0l-5.517998,5.175024c-0.538722,0.505252 -0.538722,1.324408 0,1.82966l5.517998,5.175037c0.538736,0.505239 1.41218,0.505239 1.950916,0z" clip-rule="evenodd"/>
 										</svg>
