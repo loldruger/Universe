@@ -45,6 +45,9 @@
 		:root {
 			--point-color: #6163d2;
 			--reply-color: #dadeea;
+
+			--padding: 10px;
+			--margin: 10px;
 		}
 
 		#Header1 {
@@ -216,7 +219,7 @@
 		
 		.post-item {
 			background-color: #3c42643d;
-			margin: 0 0 0.6em;
+			margin-bottom: var(--padding);
 			padding: 1.1em;
 			border-radius: 20px;
 		}
@@ -481,8 +484,6 @@
 			background-color: #000;
 			display: flex;
 			justify-content: center;
-			background: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.15) 100%), radial-gradient(at top center, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.40) 120%) #131521;
-			background-blend-mode: multiply,multiply;
 		}
 
 		a {
