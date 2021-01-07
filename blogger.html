@@ -45,9 +45,15 @@
 		:root {
 			--point-color: #3c77d2;
 			--reply-color: #dadeea;
+			--tag-color: #50564b;
+			--tag-color-hover: #ff2f2f;
 
 			--padding: 10px;
+			--padding-inside: 18px;
+
 			--margin: 10px;
+
+			--label-radius: 10px;
 		}
 
 		#Header1 {
@@ -58,8 +64,8 @@
 
 		#blog-main {
 			width: 720px;
-			margin-left: 0.6em;
-			margin-right: 0.6em;
+			margin-left: var(--padding);
+			margin-right: var(--padding);
 		}
 
 		#Blog1 {
@@ -220,19 +226,21 @@
 		.post-item {
 			background-color: #1a1b21;
 			margin-bottom: var(--padding);
-			padding: 1.1em;
+			padding: var(--padding-inside);
 			border-radius: 20px;
 		}
 
 		.post-item-label {
 			position: relative;
-			top: 0.4em;
-			margin-bottom: 1em;
+			top: 5px;
+			margin-bottom: var(--padding);
 		}
 
 		.post-item-etc {
 			display: flex;
 			align-items: center;
+			position: relative;
+			top: 8px;
 		}
 
 		.post-date {
@@ -252,8 +260,7 @@
 		.post-item-author {
 			display: flex;
 			align-items: center;
-			margin-right: 0.4em;
-			margin-left: 0.4em;
+			margin-right: var(--padding);
 		}
 
 		.post-item-comment {
@@ -282,7 +289,7 @@
 		}
 
 		.post-content {
-			margin-top: 1em;
+			margin-top: var(--padding);
 			text-align: justify;
 		}
 
@@ -302,9 +309,9 @@
 		}
 
 		.post-label-border {
-			border: solid 1px #bb4343;
-			background-color: #bb4343;
-			border-radius: 2em;
+			border: solid 1px var(--tag-color);
+			background-color: var(--tag-color);
+			border-radius: var(--label-radius);
 			padding-left: 0.5em;
 			padding-right: 0.5em;
 			font-size: 9pt;
@@ -315,8 +322,8 @@
 		}
 
 		.post-label-border:hover {
-			border: solid 1px #ff2f2f;
-			background-color: #ff2f2f;
+			border: solid 1px var(--tag-color-hover);
+			background-color: var(--tag-color-hover);
 		}
 		
 		.post-label {
@@ -342,9 +349,9 @@
 			position: relative;
 			left: -10px;
 			bottom: -3px;
-			border-radius: 2em;
-			padding-left: 0.19em;
-			padding-right: 0.25em;
+			border-radius: var(--label-radius);
+			padding-left: 4px;
+			padding-right: 5px;
 			background-color: #35415d;
 		}
 
@@ -407,7 +414,7 @@
 			padding: 0.5em;
 			padding-left: 0.7em;
 			padding-right: 0.7em;
-			border-radius: 2em;
+			border-radius: var(--label-radius);
 			background-color: #4b56777a;
 			font-size: 10pt;
 		}
