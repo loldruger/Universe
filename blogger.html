@@ -106,7 +106,7 @@
 			display: flex;
 			align-items: center;
 			position: relative;
-			bottom: 0.6em;
+			bottom: var(--padding);
 		}
 
 		#search-filtered {
@@ -197,8 +197,8 @@
 		#display-floating-container > span {
 			background-color: #32266ae0;
 			border-radius: 50%;
-			padding: 0.5em;
-			margin-bottom: 0.4em;
+			padding: 8px;
+			margin-bottom: var(--padding);
 		}
 
 		#display-floating-container > span:hover {
@@ -240,12 +240,12 @@
 			display: flex;
 			align-items: center;
 			position: relative;
-			top: 8px;
+			top: 4px;
 		}
 
 		.post-date {
-			margin-bottom: 1em;
-			font-size: 9pt;
+			margin-bottom: var(--padding);
+			font-size: 0.75em;
 		}
 
 		.post-date > time {
@@ -279,12 +279,12 @@
 		}
 
 		.post-see-summary > span {
-			font-size: 13pt;
+			font-size: 1.1em;
 		}
 
 		.post-title {
 			color: var(--point-color);
-			font-size: 18pt;
+			font-size: 1.8em;
 			font-weight: bold;
 		}
 
@@ -311,10 +311,10 @@
 		.post-label-border {
 			border: solid 1px var(--tag-color);
 			background-color: var(--tag-color);
-			border-radius: var(--label-radius);
+			border-radius: 2em;
 			padding-left: 0.5em;
 			padding-right: 0.5em;
-			font-size: 9pt;
+			font-size: 0.8em;
 		}
 
 		.post-label-border > a {
@@ -333,11 +333,11 @@
 		.post-author {
 			color: #fff;
 			display: none;
+			font-size: 16px;
 		}
 
 		.post-author-photo {
 			position: relative;
-			right: 0.35em;
 			border-radius: 50%;
 		}
 
@@ -353,19 +353,20 @@
 			padding-left: 4px;
 			padding-right: 5px;
 			background-color: #35415d;
+			font-size: 16px;
 		}
 
 		.post-comment-count > span {
 			position: relative;
 			left: 0.5px;
-			font-size: 10pt;
+			font-size: 13px;
 			color: #fff;
 		}
 		
 		.comment {
 			display: flex;
 			flex-wrap: wrap;
-			margin-top: 1em;
+			margin-top: var(--padding);
 		}
 
 		.comment-replies {
@@ -374,14 +375,14 @@
 
 		.comment-item {
 			color: #fff;
-			margin-top: 1em;
+			margin-top: var(--padding);
 			display: flex;
 		}
 
 		.comment-body {
 			background-color: #3a3b688a;
 			flex: auto;
-			padding: 1em;
+			padding: var(--padding-inside);
 			border-radius: 10px;
 		}
 
@@ -426,7 +427,7 @@
 		}
 
 		.comment-reply > svg {
-			margin-left: 0.5em;
+			margin-left: 8px;
 		}
 
 		.comment-reply path {
@@ -435,7 +436,7 @@
 
 		.comment-author-img {
 			border-radius: 50%;
-			margin-right: 0.5em;
+			margin-right: 8px;
 			flex: none;
 			position: relative;
 			top: 4px;
@@ -466,6 +467,7 @@
 			display: flex;
 			flex-flow: wrap;
 			margin-bottom: 0.6em;
+			align-items: center;
 		}
 
 		.comment-meta > div {
@@ -474,7 +476,7 @@
 
 		.comment-meta > time {
 			color: #8e877f;
-			font-size: 8pt;
+			font-size: 0.7em;
 		}
 
 		.comment-content {
@@ -484,7 +486,7 @@
 		
 		#comment-editor {
 			border-radius: 10px;
-			margin-top: 1em;
+			margin-top: var(--padding);
 		}
 
 		body {
@@ -877,7 +879,11 @@
 								<path fill="#4987ff" d="m18.00461,0l-16.0041,0c-1.10528,0 -1.99051,0.89406 -1.99051,1.99791l-0.01,17.98119l4.00102,-3.99582l14.00359,0c1.10528,0 2.00051,-0.89406 2.00051,-1.99791l0,-11.98746c0,-1.10385 -0.89523,-1.99791 -2.00051,-1.99791zm-11.00282,8.99059l-2.00051,0l0,-1.99791l2.00051,0l0,1.99791zm4.00102,0l-2.00051,0l0,-1.99791l2.00051,0l0,1.99791zm4.00102,0l-2.00051,0l0,-1.99791l2.00051,0l0,1.99791z"/>
 								</g>
 							</svg>
-							<span class = 'post-comment-count'><span><data:i.numberOfComments/></span></span>
+							<span class = 'post-comment-count'>
+								<span>
+									<data:i.numberOfComments/>
+								</span>
+							</span>
 						</span>
 
 						<span>
