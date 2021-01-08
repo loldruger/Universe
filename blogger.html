@@ -412,22 +412,12 @@
 			display: flex;
 			align-items: center;
 			color: var(--reply-color);
-			padding: 0.5em;
-			padding-left: 0.7em;
-			padding-right: 0.7em;
-			border-radius: var(--label-radius);
-			background-color: #4b56777a;
-			font-size: 10pt;
 		}
 
 		.comment-reply > span {
 			position: relative;
 			top: 2px;
 			color: var(--reply-color);
-		}
-
-		.comment-reply > svg {
-			margin-left: 8px;
 		}
 
 		.comment-reply path {
@@ -447,6 +437,8 @@
 		.comment-button {
 			display: flex;
 			align-items: center;
+			position: relative;
+			top: 4px;
 		}
 
 		.comment-button-reply {
@@ -454,7 +446,7 @@
 		}
 
 		.comment-button-delete {
-			margin-left: 7px;
+			margin-left: var(--padding);
 			position: relative;
 			top: 1px;
 		}
@@ -770,13 +762,9 @@
 
 									if(!comment.replyTo) {
 										string += `<div class = 'comment-button-reply'>
-											<a id = 'reply-${comment.id}' class="comment-reply" target="_self" data-comment-id="${comment.id}" href="javascript:;">
-												reply
-
+											<a id = 'reply-${comment.id}' class="comment-reply" target="_self" data-comment-id="${comment.id}">
 												<svg width="17" height="14" xmlns="http://www.w3.org/2000/svg">
-
-												<path stroke="null" clip-rule="evenodd" d="m6.24592,13.18375c0.38391,-0.36006 0.38391,-0.94381 0,-1.30387l-2.25408,-2.11398l5.49122,0c3.80056,0 6.8815,-2.88945 6.8815,-6.45379l0,-1.84393c0,-0.50921 -0.44013,-0.92197 -0.98307,-0.92197c-0.54295,0 -0.98307,0.41276 -0.98307,0.92197l0,1.84393c0,2.54593 -2.2007,4.60985 -4.91536,4.60985l-5.49122,0l2.25408,-2.11398c0.38391,-0.36003 0.38391,-0.94382 0,-1.30385c-0.38391,-0.36003 -1.00636,-0.36003 -1.39027,0l-3.93228,3.68787c-0.38391,0.36006 -0.38391,0.94381 0,1.30387l3.93228,3.68788c0.38391,0.36005 1.00636,0.36005 1.39027,0z" fill-rule="evenodd" />
-
+													<path stroke="null" clip-rule="evenodd" d="m6.24592,13.18375c0.38391,-0.36006 0.38391,-0.94381 0,-1.30387l-2.25408,-2.11398l5.49122,0c3.80056,0 6.8815,-2.88945 6.8815,-6.45379l0,-1.84393c0,-0.50921 -0.44013,-0.92197 -0.98307,-0.92197c-0.54295,0 -0.98307,0.41276 -0.98307,0.92197l0,1.84393c0,2.54593 -2.2007,4.60985 -4.91536,4.60985l-5.49122,0l2.25408,-2.11398c0.38391,-0.36003 0.38391,-0.94382 0,-1.30385c-0.38391,-0.36003 -1.00636,-0.36003 -1.39027,0l-3.93228,3.68787c-0.38391,0.36006 -0.38391,0.94381 0,1.30387l3.93228,3.68788c0.38391,0.36005 1.00636,0.36005 1.39027,0z" fill-rule="evenodd" />
 												</svg>
 											</a>
 										</div>
@@ -812,7 +800,7 @@
 						<b:if cond='data:i.allowNewComments'>
 							<!-- <b:if cond='data:i.embedCommentForm'></b:if> -->
 							<div id="top-continue" class="continue">
-								<a class="comment-reply" target="_self" href="javascript:;">
+								<a class="comment-reply" target="_self">
 									Add comment
 								</a>
 							</div>
@@ -948,8 +936,7 @@
 							<b:if cond = '!data:j.inReplyTo'>
 								<div class = 'comment-button-reply'>
 									<div class = 'spacer'></div>
-									<a expr:id = '"reply-" + data:j.id' class="comment-reply" target="_self" expr:data-comment-id="data:j.id" href="javascript:;">
-										reply
+									<a expr:id = '"reply-" + data:j.id' class="comment-reply" target="_self" expr:data-comment-id="data:j.id">
 										<svg width="23" height="19" xmlns="http://www.w3.org/2000/svg">
 											 <path stroke="null" fill-rule="evenodd" fill="#bcc0ca" d="m8.33696,18.177385c0.538722,-0.505252 0.538722,-1.324408 0,-1.82966l-3.163054,-2.966447l7.705594,0c5.333145,0 9.656496,-4.054641 9.656496,-9.056314l0,-2.587518c0,-0.714543 -0.617602,-1.293759 -1.379499,-1.293759c-0.761898,0 -1.379499,0.579216 -1.379499,1.293759l0,2.587518c0,3.572586 -3.088147,6.468796 -6.897497,6.468796l-7.705594,0l3.163054,-2.96646c0.538722,-0.505213 0.538722,-1.324421 0,-1.829634c-0.538736,-0.505213 -1.41218,-0.505213 -1.950916,0l-5.517998,5.175024c-0.538722,0.505252 -0.538722,1.324408 0,1.82966l5.517998,5.175037c0.538736,0.505239 1.41218,0.505239 1.950916,0z" clip-rule="evenodd"/>
 										</svg>
